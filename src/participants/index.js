@@ -2,13 +2,15 @@
 void function ParticipantsModule(parent){
 	// Module
 	const mod = {
-		AddParticipant
+		AddParticipant,
+		RemoveParticipant,
+		GetParticipants
 	};
 
 	// Vars & Consts
 	let participants = [];
 
-	return Object.assign(parent, mod);
+	return Object.assign(parent, { [arguments.callee.name]: mod });
 
 	/* --- */
 
@@ -24,6 +26,7 @@ void function ParticipantsModule(parent){
 	}
 
 	function GetParticipants() {
-		//
+		// Return the participant names
+		return participants.map(p => p.name);
 	}
 }(window);
