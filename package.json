@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/eginwong/scheduler-node#readme",
   "dependencies": {
+    "moment": "^2.24.0",
     "munkres-js": "^1.2.2"
   }
 }

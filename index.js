@@ -1,47 +1,59 @@
 const munkres = require("munkres-js");
 const fs = require("fs");
+const moment = require("moment");
+
+const STATSTARTTIME = new Date();
 
 fs.readFile("source.json", (err, data) => {
   const store = JSON.parse(data);
-  const peopleWithCapabilities = store.database.users.filter(
-    x =>
-      !(
-        Object.keys(x.capabilities).length === 0 &&
-        x.capabilities.constructor === Object
-      )
-  );
+  const database = store.database;
 
-  // convert db into hashmap
-  var peopleMap = new Map(
-    peopleWithCapabilities.map(i => [
-      i.name,
-      {
-        capabilities: i.capabilities,
-        history: i.history
-      }
-    ])
-  );
+  // create hashmap to more easily extract users from json
+  const peopleMap = mapPeopleToCapabilities(database.users);
 
   // metadata for scheduler run
-  const totalRoles = store.database.roles
-    .map(role => role.quantity)
-    .reduce((quantity, current) => quantity + current, 0);
+  const scheduleDate = moment(new Date());
 
-  const scheduleDate = new Date();
-
-  // var d2 = new Date("2011/02/01")  // some date
-  // var diff = Math.abs(d1-d2);
-
-  // TODO: find a way to create munkresMatrix directly
-  const munkresMatrix = [];
+  // TODO: dot matrix participant, iterate through list of users and potential locks and adjust matrix accordingly
 
   // convert people with capabilities into an array of values for cost matrix
   // start by retrieving the user object from the peopleMap to compute values
+
+  const munkresMatrix = [];
+  const peoples = [];
+  const roleArray = populateRoles(database.roles);
+
+  // TODO: to refactor to not use the entire member base of people for the scheduler run
   peopleMap.forEach((value, key) => {
+    peoples.push(key);
+    // console.log(key, value);
     const userHeuristic = [];
-    for (let i = 0; i < totalRoles; i++) {
-      let roleQuantityCount = 0;
+    for (let i = 0; i < database.roles.length; i++) {
+      const role = database.roles[i];
+
+      // determine munkres value for the role + capability combination
+      let munkresVal = Number.MAX_VALUE;
+      // are they capable of the role?
+      if (value.capabilities[role.name] > 0) {
+        // check lastDate
+        const lastRoleDate = findLastRoleDate(value.history[role.name]);
+
+        if (lastRoleDate) {
+          munkresVal = moment(scheduleDate).diff(lastRoleDate, "days");
+        } else {
+          // leave as Infinity
+        }
+      } else {
+        munkresVal = -munkresVal;
+      }
+
+      let count = 0;
+      while (count != role.quantity) {
+        userHeuristic.push(munkresVal);
+        count++;
+      }
     }
+    munkresMatrix.push(userHeuristic);
   });
 
   // must use the roles object to know size of array
@@ -52,22 +64,64 @@ fs.readFile("source.json", (err, data) => {
   // retrieve values out of munkres into names
 
   // set up email and tings later
+
+  console.info(
+    "STATS: Preprocessing Execution time: %dms",
+    new Date() - STATSTARTTIME
+  );
+
+  const STATSBEFOREMUNKRES = new Date();
+  const schedule = munkres(munkres.make_cost_matrix(munkresMatrix));
+  console.info(
+    "STATS: Munkres Execution time: %dms",
+    new Date() - STATSBEFOREMUNKRES
+  );
+
+  schedule.sort(function(a, b) {
+    return a[1] - b[1];
+  });
+
+  console.log("NAMED SCHEDULE: ");
+  console.log(
+    schedule.map(pair => {
+      return peoples[pair[0]] + ", " + roleArray[pair[1]];
+    })
+  );
 });
 
-const result = munkres(
-  munkres.make_cost_matrix([
-    // Toastmaster, Grammarian, Timekeeper, Evaluator #1, Evaluator #2, Speaker #1, Speaker #2, General Evaluator, Table Topics
-    [400, 150, 400, 300, 300, 300, 300, 300, 300],
-    [400, 450, 600, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300],
-    [300, 225, 300, 300, 300, 300, 300, 300, 300]
-  ])
-);
+function mapPeopleToCapabilities(users) {
+  // filter out the members who can't do things
+  const peopleWithCapabilities = users.filter(
+    x =>
+      Object.keys(x.capabilities).length !== 0 ||
+      x.capabilities.constructor !== Object
+  );
 
-// console.log(result);
+  // create hashmap to more easily extract users from json
+  return new Map(
+    peopleWithCapabilities.map(i => [
+      i.name,
+      {
+        capabilities: i.capabilities,
+        history: i.history
+      }
+    ])
+  );
+}
+
+function findLastRoleDate(userHistory) {
+  return userHistory && userHistory[0] ? userHistory[0] : undefined;
+}
+
+function populateRoles(databaseRoles) {
+  const roles = [];
+
+  databaseRoles.forEach(role => {
+    let q = 0;
+    while (q != role.quantity) {
+      roles.push(role.name);
+      q++;
+    }
+  });
+  return roles;
+}
