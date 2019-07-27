@@ -1,28 +1,25 @@
 // Participants Module Node Test
 
-const window = {};
-
-import '../models/Participant.mjs';
-import './index.js';
+import * as Module from './index.js';
 
 const IT = console.log.bind(console, 'It');
 
 //with(global.window) {
 
 	IT(`Exists`, (function(){
-		return !!ParticipantsModule;
+		return !!Module;
 	})());
 
 	IT(`Has #AddParticipant() defined`, (function(){
-		return ParticipantsModule.AddParticipant &&
-				'function' === typeof ParticipantsModule.AddParticipant;
+		return Module.AddParticipant &&
+				'function' === typeof Module.AddParticipant;
 	})());
 
 	IT(`Adds a participant`, (function(){
 		const name = 'Frank';
-		const preLength = ParticipantsModule.GetParticipants().length;
-		ParticipantsModule.AddParticipant(name);
-		const particips = ParticipantsModule.GetParticipants();
+		const preLength = Module.GetParticipants().length;
+		Module.AddParticipant(name);
+		const particips = Module.GetParticipants();
 		return particips.length == (preLength + 1) &&
 				particips[0] == name;
 	})());

@@ -1,32 +1,22 @@
-// Participants module
-void function ParticipantsModule(parent){
-	// Module
-	const mod = {
-		AddParticipant,
-		RemoveParticipant,
-		GetParticipants
-	};
+import Participant from '../models/Participant.mjs';
 
-	// Vars & Consts
-	let participants = [];
+/* --- Vars & Consts ---*/
+let participants = [];
 
-	return Object.assign(parent, { [arguments.callee.name]: mod });
+/* --- Functions --- */
 
-	/* --- */
+export function AddParticipant(name, ...opts) {
+	// Create a participant
+	participants.push(new Participant(name, ...opts));
+}
 
-	function AddParticipant(name, ...opts) {
-		// Create a participant
-		participants.push(new Participant(name, ...opts));
-	}
+export function RemoveParticipant(name) {
+	// Remove a participant
+	const ind = participants.map(p => p.name).indexOf(name);
+	participants.splice(ind, 1);
+}
 
-	function RemoveParticipant(name) {
-		// Remove a participant
-		const ind = participants.map(p => p.name).indexOf(name);
-		participants.splice(ind, 1);
-	}
-
-	function GetParticipants() {
-		// Return the participant names
-		return participants.map(p => p.name);
-	}
-}(window);
+export function GetParticipants() {
+	// Return the participant names
+	return participants.map(p => p.name);
+}
