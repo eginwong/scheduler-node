@@ -2,7 +2,8 @@ import DatabaseService from './database.service';
 
 const MemberService = {
 	GetRoles,
-	GetMembers
+	GetMembers,
+	UpdateMembers
 };
 
 export default MemberService;
@@ -31,4 +32,8 @@ function GetMembers() {
 		return members;
 	};
 	return members;
+}
+
+function UpdateMembers() {
+	DatabaseService.GetData().database.users = members;
 }

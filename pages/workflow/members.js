@@ -2,6 +2,8 @@ import Workflow from './index';
 
 import MemberService from '../../src/services/member.service';
 
+import Checkbox from '../../components/checkbox';
+
 export default function Members() {
     return (
       <Workflow>
@@ -11,17 +13,27 @@ export default function Members() {
 	        		<tr>
 	        			<th>Members</th>
 	        			{
-	        				MemberService.GetRoles().map(role => <th>{ CapCase(role) }</th>)
+	        				MemberService.GetRoles().filter((r, i, a) => a.indexOf(r) === i)
+	        					.map((role, i) => <th key={i}>{ CapCase(role) }</th>)
 	        			}
 	        		</tr>
 	        		{
-	        			MemberService.GetMembers().map(member => (<tr>
-	        				<td>{ CapCase(member.name) }</td>
-	        				<td>thing</td>
+	        			MemberService.GetMembers().map((member, i) => (<tr key={"member_" + i}>
+	        				<td key={"name_" + i}>{ CapCase(member.name) }</td>
+	        				{
+	        					Object.keys(member.capabilities).map((capability, j) => (
+	        						<td key={"capability_" + j}>
+	        							<Checkbox id={ member.name + "_" + capability }
+	        								checked={ !!member.capabilities[capability] }
+	        								change={ b => member.capabilities[capability] = +b } />
+	        						</td>
+	        					))
+	        				}
 	        			</tr>))
 	        		}
         		</tbody>
         	</table>
+        	<button onClick={Save}>Save Changes</button>
         </section>
       </Workflow>
     );
@@ -29,4 +41,8 @@ export default function Members() {
 
 function CapCase(string) {
 	return string.replace(/[-_]/, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+function Save() {
+	MemberService.UpdateMembers();
 }
