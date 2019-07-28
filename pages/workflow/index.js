@@ -1,24 +1,27 @@
-import Link from 'next/link';
+import Link from "next/link";
+import Window from "../../layouts/main";
 
 export default function Workflow(props) {
-    return (
+  return (
+    <Window>
       <section>
         <header>
-        	<h2>Toastmaster's Scheduler</h2>
-        	<button>HomeIcon</button>
-        	<nav>
-        		<Link href="/workflow/newschedule">
-        			<a>New Schedule</a>
-        		</Link>
-        		<Link href="/workflow/prevschedule">
-        			<a>Previous Schedule</a>
-        		</Link>
-        		<Link href="/workflow/members">
-        			<a>Members</a>
-        		</Link>
-        	</nav>
+          <h2>Toastmaster's Scheduler</h2>
+          <button>HomeIcon</button>
+          <nav>
+            <Link href="/workflow/newschedule">
+              <a>New Schedule</a>
+            </Link>
+            <Link href="/workflow/prevschedule">
+              <a>Previous Schedule</a>
+            </Link>
+            <Link href="/workflow/members">
+              <a>Members</a>
+            </Link>
+          </nav>
         </header>
         {props.children}
       </section>
-    );
-  }
+    </Window>
+  );
+}

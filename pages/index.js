@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Page from "../layouts/main";
+import Window from "../layouts/main";
 import Link from "next/link";
 import Upload from "../components/upload";
 import Router from "next/router";
@@ -14,7 +14,7 @@ class Index extends Component {
 
   render() {
     return (
-      <Page>
+      <Window>
         <div className="index">
           <div className="index--contents">
             <img
@@ -36,7 +36,7 @@ class Index extends Component {
             </button>
           </div>
         </div>
-      </Page>
+      </Window>
     );
   }
 }
