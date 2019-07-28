@@ -1,5 +1,7 @@
 import Workflow from './index';
 
+import { CapCase } from '../../src/utils/string.utils';
+
 import MemberService from '../../src/services/member.service';
 
 import Checkbox from '../../components/checkbox';
@@ -43,10 +45,6 @@ export default function Members() {
         </section>
       </Workflow>
     );
-}
-
-function CapCase(string) {
-	return string.replace(/[-_]/, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
 function Save() {
