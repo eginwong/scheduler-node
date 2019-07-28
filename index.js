@@ -8,13 +8,13 @@ fs.readFile("source.json", (err, data) => {
   const store = JSON.parse(data);
   const database = store.database;
 
-  // create hashmap to more easily extract users from json
-  const peopleMap = mapPeopleToCapabilities(database.users);
+  // create hashmap to more easily extract members from json
+  const peopleMap = mapPeopleToCapabilities(database.members);
 
   // metadata for scheduler run
   const scheduleDate = moment(new Date());
 
-  // TODO: dot matrix participant, iterate through list of users and potential locks and adjust matrix accordingly
+  // TODO: dot matrix participant, iterate through list of members and potential locks and adjust matrix accordingly
 
   // convert people with capabilities into an array of values for cost matrix
   // start by retrieving the user object from the peopleMap to compute values
@@ -89,15 +89,15 @@ fs.readFile("source.json", (err, data) => {
   );
 });
 
-function mapPeopleToCapabilities(users) {
+function mapPeopleToCapabilities(members) {
   // filter out the members who can't do things
-  const peopleWithCapabilities = users.filter(
+  const peopleWithCapabilities = members.filter(
     x =>
       Object.keys(x.capabilities).length !== 0 ||
       x.capabilities.constructor !== Object
   );
 
-  // create hashmap to more easily extract users from json
+  // create hashmap to more easily extract members from json
   return new Map(
     peopleWithCapabilities.map(i => [
       i.name,
