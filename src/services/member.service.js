@@ -1,3 +1,5 @@
+import DatabaseService from './database.service';
+
 const MemberService = {
 	GetRoles,
 	GetMembers
@@ -5,31 +7,28 @@ const MemberService = {
 
 export default MemberService;
 
+let roles, members;
+
+function InitData() {
+	const data = DatabaseService.GetData().database;
+	roles = data.roles.map(role => Array(role.quantity).fill(role.name)).reduce((a,b) => a.concat(b));
+	members = data.users;
+
+	InitData = () => true;
+}
+
 function GetRoles() {
-	return ['Toastmaster', 'Grammarian', 'Speaker 1', 'Speaker 2'];
+	InitData();
+	GetRoles = function GetRoles() {
+		return roles;
+	};
+	return roles;
 }
 
 function GetMembers() {
-	return [
-		{
-			name: 'Jimbo Slice',
-			capabilites: {},
-			history: {}
-		},
-		{
-			name: 'Kimbo Chop',
-			capabilites: {},
-			history: {}
-		},
-		{
-			name: 'Limbo Split',
-			capabilites: {},
-			history: {}
-		},
-		{
-			name: 'Timbo Rend',
-			capabilites: {},
-			history: {}
-		}
-	];
+	InitData();
+	GetMembers = function GetMembers() {
+		return members;
+	};
+	return members;
 }
