@@ -5,7 +5,6 @@ const Index = () => (
     <Link href="/landing">
       <a>Create Schedule</a>
     </Link>
-    <p>Hello Next.js</p>
   </div>
 );
 
