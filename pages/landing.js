@@ -1,10 +1,10 @@
-import Page from "../layouts/main";
+import Window from "../layouts/main";
 import Link from "next/link";
 import "../static/styles/landing.scss";
 
 export default () => {
   return (
-    <Page>
+    <Window>
       <div className="landing">
         <img
           className="landing--logo"
@@ -30,6 +30,6 @@ export default () => {
           </button>
         </div>
       </div>
-    </Page>
+    </Window>
   );
 };
