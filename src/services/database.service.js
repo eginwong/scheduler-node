@@ -1,14 +1,19 @@
 const DatabaseService = {
 	SetData,
-	GetData
+	GetData,
+	Export
 };
 
 export default DatabaseService;
 
 let data;
+const version = 0.1;
 
 function SetData(dataObj) {
-	data = dataObj;
+	data = {
+		database: dataObj.database,
+		session: dataObj.session
+	};
 }
 
 function GetData() {
@@ -888,8 +893,20 @@ function GetData() {
 			}
 		  ]
 		},
-		"session-state": {
+		"session": {
 		  "session-date": "2020-07-31 15:33:17"
 		}
-	  };
+	};
+}
+
+function Export() {
+	if(data && data.database) {
+		return {
+			version,
+			modified: new Date(),
+			database: data.database,
+			session: data.session
+		}
+	}
+	return {};
 }
