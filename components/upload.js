@@ -1,23 +1,36 @@
 import React, { Component } from "react";
 import "../static/styles/upload.scss";
+import DatabaseService from '../src/services/database.service';
 
 class Upload extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedFile: null
-    };
-  }
 
+  // to ensure that label will override the click event for the button
   onClickHandler = e => {
     if (e.target !== e.currentTarget) e.currentTarget.click();
   };
 
-  render(props) {
+  onReaderLoad = e => {
+    DatabaseService.SetData(JSON.parse(e.target.result));
+    this.props.reroute();
+  }
+
+  onChange = e => {
+    const reader = new FileReader();
+    reader.onload = this.onReaderLoad; // set callback method
+    reader.readAsText(event.target.files[0]);
+  };
+
+  render() {
     return (
       <React.Fragment>
-        <input id="hi" className="upload--input" type="file" name="file" />
-        <label htmlFor="hi" onClick={this.onClickHandler}>
+        <input
+          id="uploadInput"
+          className="upload--input"
+          type="file"
+          name="file"
+          onChange={this.onChange}
+        />
+        <label htmlFor="uploadInput" onClick={this.onClickHandler}>
           <button className="btn btn-primary">{this.props.buttonLabel}</button>
         </label>
       </React.Fragment>
