@@ -1,0 +1,26 @@
+.index {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.index--contents {
+	margin-left: 100px;
+}
+
+.index--logo {
+	margin-bottom: 100px;
+	width: 125px;
+}
+
+.index--title {
+	font-size: 38px;
+	margin-bottom: 75px;
+}
+
+.index--button {
+	margin-bottom: 25px;
+}
+
