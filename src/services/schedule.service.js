@@ -4,7 +4,7 @@
 import DatabaseService from "./database.service";
 
 const ScheduleService = {
-    SaveSession,
+    ExportSession,
     CreateSchedule,
     SendEmail
 };
