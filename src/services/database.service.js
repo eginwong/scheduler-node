@@ -810,83 +810,83 @@ function GetData() {
 		  ],
 		  "history": [
 			{
-			  "session-date": "2019-04-17",
+			  "sessionDate": "2019-04-17",
 			  "roles": [
 				{
-				  "role": "toastmaster",
+				  "roleName": "toastmaster",
 				  "user": "maria-acevedo"
 				},
 				{
-				  "role": "grammarian",
+				  "roleName": "grammarian",
 				  "user": "leonard-yu"
 				},
 				{
-				  "role": "evaluator",
+				  "roleName": "evaluator",
 				  "user": "kurt-henry"
 				},
 				{
-				  "role": "evaluator",
+				  "roleName": "evaluator",
 				  "user": "cornell-skyers"
 				},
 				{
-				  "role": "speaker",
+				  "roleName": "speaker",
 				  "user": "matthew-steinberg"
 				},
 				{
-				  "role": "speaker",
+				  "roleName": "speaker",
 				  "user": "reem-abdalla"
 				},
 				{
-				  "role": "topicsmaster",
+				  "roleName": "topicsmaster",
 				  "user": "andrea-richardson"
 				},
 				{
-				  "role": "timekeeper",
+				  "roleName": "timekeeper",
 				  "user": "chandira-manoharan"
 				},
 				{
-				  "role": "general-evaluator",
+				  "roleName": "general-evaluator",
 				  "user": "dan-barmasch"
 				}
 			  ]
 			},
 			{
-			  "session-date": "2019-03-27",
+			  "sessionDate": "2019-03-27",
 			  "roles": [
 				{
-				  "role": "toastmaster",
+				  "roleName": "toastmaster",
 				  "user": "andrea-richardson"
 				},
 				{
-				  "role": "grammarian",
+				  "roleName": "grammarian",
 				  "user": "reem-abdalla"
 				},
 				{
-				  "role": "evaluator",
+				  "roleName": "evaluator",
 				  "user": "dana-woo"
 				},
 				{
-				  "role": "evaluator",
+				  "roleName": "evaluator",
 				  "user": "keegan-grimminck"
 				},
 				{
-				  "role": "speaker",
+				  "roleName": "speaker",
 				  "user": "krishna-jayarajan"
 				},
 				{
-				  "role": "speaker",
+				  "roleName": "speaker",
 				  "user": "eric-wong"
 				},
 				{
-				  "role": "topicsmaster",
+				  "roleName": "topicsmaster",
 				  "user": "maria-acevedo"
 				},
 				{
-				  "role": "timekeeper",
+				  "roleName": "timekeeper",
 				  "user": "cornell-skyers"
 				},
 				{
-				  "role": "general-evaluator",
+				  "roleName": "general-evaluator",
 				  "user": "mathias-tello"
 				}
 			  ]
