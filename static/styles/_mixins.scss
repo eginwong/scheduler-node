@@ -1,0 +1,9 @@
+@mixin btn-light-override {
+    background-color: #FFF;
+    border: 1px solid $primary;
+}
+
+@mixin btn-primary-override {
+    background-color: $primary;
+    border: 1px solid $primary;
+}

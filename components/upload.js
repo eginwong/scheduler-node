@@ -30,7 +30,7 @@ class Upload extends Component {
           onChange={this.onChange}
         />
         <label htmlFor="uploadInput" onClick={this.onClickHandler}>
-          <button className="btn btn-primary">{this.props.buttonLabel}</button>
+          <button className="upload--btn btn btn-primary">{this.props.buttonLabel}</button>
         </label>
       </Fragment>
     );

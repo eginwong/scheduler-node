@@ -1,0 +1,45 @@
+@import "./variables";
+@import "./mixins";
+
+.landing {
+    margin: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.landing--logo {
+	margin-bottom: 50px;
+	width: 125px;
+}
+
+.landing--title {
+	font-size: 38px;
+	margin-bottom: 50px;
+}
+
+.landing--routes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.landing--button {
+    margin: 15px;
+    padding: 12px;
+    width: 140px;
+
+    &.btn-primary {
+        @include btn-primary-override;
+        
+        & > a {
+            color: white;
+        }
+    }
+    
+    &.btn-light {
+        @include btn-light-override;
+        & > a {
+            color: $primary;
+        }
+    }
+}

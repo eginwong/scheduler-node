@@ -29,7 +29,7 @@ class Index extends Component {
                 reroute={this.routeToLandingImperatively}
               />
             </div>
-            <button className="btn btn-light index--button">
+            <button className="index--button btn btn-light">
               <Link href="/landing">
                 <a>CREATE SCHEDULE</a>
               </Link>

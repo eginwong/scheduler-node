@@ -1,3 +1,10 @@
+@import "./variables";
+@import "./mixins";
+
 .upload--input {
     display: none;
+}
+
+.upload--btn {
+    @include btn-primary-override;
 }
