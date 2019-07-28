@@ -4,7 +4,13 @@ import MemberService from '../../src/services/member.service';
 
 import Checkbox from '../../components/checkbox';
 
+let roles, members;
+
 export default function Members() {
+
+	roles = MemberService.GetRoles().filter((r, i, a) => a.indexOf(r) === i).slice();
+	members = MemberService.GetMembers().map(m => JSON.parse(JSON.stringify(m)));
+
     return (
       <Workflow>
         <section>
@@ -13,12 +19,12 @@ export default function Members() {
 	        		<tr>
 	        			<th>Members</th>
 	        			{
-	        				MemberService.GetRoles().filter((r, i, a) => a.indexOf(r) === i)
+	        				roles.filter((r, i, a) => a.indexOf(r) === i)
 	        					.map((role, i) => <th key={i}>{ CapCase(role) }</th>)
 	        			}
 	        		</tr>
 	        		{
-	        			MemberService.GetMembers().map((member, i) => (<tr key={"member_" + i}>
+	        			members.map((member, i) => (<tr key={"member_" + i}>
 	        				<td key={"name_" + i}>{ CapCase(member.name) }</td>
 	        				{
 	        					Object.keys(member.capabilities).map((capability, j) => (
@@ -44,5 +50,5 @@ function CapCase(string) {
 }
 
 function Save() {
-	MemberService.UpdateMembers();
+	MemberService.UpdateMembers(members);
 }
