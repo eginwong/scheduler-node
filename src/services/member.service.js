@@ -13,7 +13,7 @@ let roles, members;
 function InitData() {
 	const data = DatabaseService.GetData().database;
 	roles = data.roles.map(role => Array(role.quantity).fill(role.name)).reduce((a,b) => a.concat(b)).slice();
-	members = data.users.slice();
+	members = data.members.slice();
 
 	InitData = () => true;
 }
@@ -35,5 +35,5 @@ function GetMembers() {
 }
 
 function UpdateMembers(newMembers) {
-	DatabaseService.GetData().database.users = members = newMembers;
+	DatabaseService.GetData().database.members = members = newMembers;
 }

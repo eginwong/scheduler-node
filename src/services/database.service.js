@@ -21,7 +21,7 @@ function GetData() {
 		"version": 10000.0,
 		"modified": "2019-07-13 15:30:38",
 		"database": {
-		  "users": [
+		  "members": [
 			{
 			  "name": "munaf-matadar",
 			  "capabilities": {
@@ -808,7 +808,7 @@ function GetData() {
 			  "quantity": 1
 			}
 		  ],
-		  "schedules": [
+		  "history": [
 			{
 			  "session-date": "2019-04-17",
 			  "roles": [
@@ -894,7 +894,7 @@ function GetData() {
 		  ]
 		},
 		"session": {
-		  "session-date": "2020-07-31 15:33:17"
+		  "schedule-date": "2020-07-31 15:33:17"
 		}
 	};
 }
