@@ -12,8 +12,8 @@ export default function Workflow(props) {
             <Link href="/workflow/newschedule">
               <a>New Schedule</a>
             </Link>
-            <Link href="/workflow/prevschedule">
-              <a>Previous Schedule</a>
+            <Link href="/workflow/previous-sessions">
+              <a>Previous Sessions</a>
             </Link>
             <Link href="/workflow/members">
               <a>Members</a>
