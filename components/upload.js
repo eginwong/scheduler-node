@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import { Component, Fragment } from "react";
 import "../static/styles/upload.scss";
-import DatabaseService from '../src/services/database.service';
+import DatabaseService from "../src/services/database.service";
 
 class Upload extends Component {
-
   // to ensure that label will override the click event for the button
   onClickHandler = e => {
     if (e.target !== e.currentTarget) e.currentTarget.click();
@@ -12,7 +11,7 @@ class Upload extends Component {
   onReaderLoad = e => {
     DatabaseService.SetData(JSON.parse(e.target.result));
     this.props.reroute();
-  }
+  };
 
   onChange = e => {
     const reader = new FileReader();
@@ -22,7 +21,7 @@ class Upload extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <input
           id="uploadInput"
           className="upload--input"
@@ -33,7 +32,7 @@ class Upload extends Component {
         <label htmlFor="uploadInput" onClick={this.onClickHandler}>
           <button className="btn btn-primary">{this.props.buttonLabel}</button>
         </label>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

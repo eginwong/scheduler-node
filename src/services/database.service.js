@@ -3,7 +3,6 @@ const DatabaseService = {
 	GetData
 };
 
-
 export default DatabaseService;
 
 let data;
