@@ -19,7 +19,7 @@ export default () => {
             </Link>
           </button>
           <button className="landing--button btn btn-light">
-            <Link href="/workflow/prevschedule">
+            <Link href="/workflow/prev-sessions">
               <a>Previous Sessions</a>
             </Link>
           </button>
