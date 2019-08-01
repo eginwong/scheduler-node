@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Window from "../layouts/main";
 import Link from "../src/Link";
 import Upload from "../components/upload";
@@ -31,7 +31,7 @@ class Index extends Component {
             </div>
             <button className="index--button btn btn-light">
               <Link href="/landing">
-                <a>CREATE SCHEDULE</a>
+                CREATE SCHEDULE
               </Link>
             </button>
           </div>

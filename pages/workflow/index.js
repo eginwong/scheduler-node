@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Window from "../../layouts/main";
-import React from "react";
+import Router from "next/router";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -9,6 +9,12 @@ import { Home } from '@material-ui/icons';
 import "../../static/styles/workflow.scss";
 
 export default function Workflow(props) {
+  function routeToHome() {
+    Router.push({
+      pathname: "/"
+    });
+  }
+
   return (
     <Window>
       <section>
@@ -20,7 +26,7 @@ export default function Workflow(props) {
                 <Typography variant="h6" className="workflow--title">
                   Toastmasters Scheduler
                 </Typography>
-                <IconButton className="workflow--home-icon-button">
+                <IconButton className="workflow--home-icon-button" onClick={routeToHome}>
                   <Home className="workflow--home-icon"/>
                 </IconButton>
               </Toolbar>
