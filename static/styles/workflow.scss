@@ -1,0 +1,27 @@
+@import "./variables";
+
+.workflow--container {
+    flex-grow: 1;
+}
+
+.workflow--title {
+    flex-grow: 1;
+}
+
+.workflow--logo {
+    margin-right: 30px;
+    width: 35px;
+}
+
+.workflow--toolbar {
+    background-color: #FFF;
+    color: $primary;
+}
+
+.workflow--home-icon-button:focus {
+    outline: none; // TODO: make accessible
+}
+
+.workflow--home-icon {
+    fill: $primary;
+}
