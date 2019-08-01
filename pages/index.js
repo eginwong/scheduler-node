@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Window from "../layouts/main";
-import Link from "next/link";
+import Link from "../src/Link";
 import Upload from "../components/upload";
 import Router from "next/router";
 import "../static/styles/index.scss";
