@@ -14,80 +14,142 @@ fs.readFile("source.json", (err, data) => {
   // metadata for scheduler run
   const scheduleDate = moment(new Date());
 
-  // TODO: dot matrix participant, iterate through list of members and potential locks and adjust matrix accordingly
-
   // convert people with capabilities into an array of values for cost matrix
   // start by retrieving the user object from the peopleMap to compute values
 
   const munkresMatrix = [];
-  const peoples = [];
+  const peoples = []; // filtered peoples
   const roleArray = populateRoles(database.roles);
 
-  // TODO: to refactor to not use the entire member base of people for the scheduler run
-  peopleMap.forEach((value, key) => {
-    peoples.push(key);
-    // console.log(key, value);
-    const userHeuristic = [];
-    for (let i = 0; i < database.roles.length; i++) {
-      const role = database.roles[i];
-
-      // determine munkres value for the role + capability combination
-      let munkresVal = Number.MAX_VALUE;
-      // are they capable of the role?
-      if (value.capabilities[role.name] > 0) {
-        // check lastDate
-        const lastRoleDate = findLastRoleDate(value.history[role.name]);
-
-        if (lastRoleDate) {
-          munkresVal = moment(scheduleDate).diff(lastRoleDate, "days");
-        } else {
-          // leave as Infinity
-        }
-      } else {
-        munkresVal = -munkresVal;
-      }
-
-      let count = 0;
-      while (count != role.quantity) {
-        userHeuristic.push(munkresVal);
-        count++;
-      }
+  const mockInput = [
+    {
+      name: "munaf-matadar",
+      lock: "topicsmaster"
+    },
+    {
+      name: "andrea-richardson",
+      lock: "toastmaster"
+    },
+    {
+      name: "reem-abdalla"
+    },
+    {
+      name: "dana-woo"
+    },
+    {
+      name: "keegan-grimminck",
+    },
+    {
+      name: "eric-wong"
+    },
+    {
+      name: "dan-barmasch",
+    },
+    {
+      name: "bamike-kuyoro"
+    },
+    {
+      name: "maame-apenteng"
+    },
+    {
+      name: "kurt-henry"
+    },
+    {
+      name: "matthew-steinberg"
+    },
+    {
+      name: "yuki-zhong"
+    },
+    {
+      name: "nikhil-metrani"
     }
-    munkresMatrix.push(userHeuristic);
-  });
+  ];
 
-  // must use the roles object to know size of array
-  // check if locked object contains role, if yes, set to 0 or 1 depending on user (make this a hashmap too)
-  // iterate by roles to create an array for each person
-  // store index of the person in the array back into the hashmap for quick retrieval afterwards
-  // run munkres
-  // retrieve values out of munkres into names
+  // #0 preprocess to know which roles should be removed from matrix
+  const lockMap = generateLockMap(mockInput);
 
-  // set up email and tings later
+  const globalConstraints = {};
+  for (const [key, val] of lockMap.entries()) {
+    globalConstraints[key] = val.length;
+  }
 
-  console.info(
-    "STATS: Preprocessing Execution time: %dms",
-    new Date() - STATSTARTTIME
-  );
+  if(mockInput.length < roleArray.length) {
+    throw new Error("Insufficient members to create schedule");
+  }
 
-  const STATSBEFOREMUNKRES = new Date();
-  const schedule = munkres(munkres.make_cost_matrix(munkresMatrix));
-  console.info(
-    "STATS: Munkres Execution time: %dms",
-    new Date() - STATSBEFOREMUNKRES
-  );
+  mockInput
+    .filter(member => !member.lock) // #1 if you're locked for a role, get filtered out.
+    .map(input => peopleMap.get(input.name))
+    .forEach(member => {
+      peoples.push(member.name);
+      const userHeuristic = [];
+      const localConstraints = JSON.parse(JSON.stringify(globalConstraints));
 
-  schedule.sort(function(a, b) {
-    return a[1] - b[1];
-  });
+      for (let i = 0; i < database.roles.length; i++) {
+        const role = database.roles[i];
+        // determine munkres value for the role + capability combination
+        let munkresVal = 1000000;
+        // are they capable of the role?
+        if (member.capabilities[role.name] > 0) {
+          // check lastDate
+          const lastRoleDate = findLastRoleDate(member.history[role.name]);
+
+          if (lastRoleDate) {
+            munkresVal = moment(scheduleDate).diff(lastRoleDate, "days");
+          }
+        } else {
+          munkresVal = -munkresVal;
+        }
+
+        let count = 0;
+
+        while (count != role.quantity) {
+          if (isRoleLocked(localConstraints, role.name)) {
+            // update local constraints object
+            localConstraints[role.name]--;
+          } else {
+            userHeuristic.push(munkresVal);
+          }
+          count++;
+        }
+      }
+
+      munkresMatrix.push(userHeuristic);
+    });
+
+  // TODO: set up email and tings later
+
+  const schedule = retrieveSchedule(munkresMatrix);
 
   console.log("NAMED SCHEDULE: ");
-  console.log(
-    schedule.map(pair => {
-      return peoples[pair[0]] + ", " + roleArray[pair[1]];
-    })
-  );
+  // time to fabricate the schedule array with the locks
+  let scheduleIndex = 0;
+  const resultArray = [];
+  for (let index = 0; index < roleArray.length; index++) {
+    const roleName = roleArray[index];
+    if (lockMap.get(roleName) && lockMap.get(roleName).length > 0) {
+      resultArray.push(roleName + ": " + lockMap.get(roleName).pop());
+    } else {
+      resultArray.push(roleName + ": " + peoples[schedule[scheduleIndex][0]]);
+      scheduleIndex++;
+    }
+  }
+
+  console.log(resultArray);
 });
+
+// function to create lockMap (key: role, value: [] })
+function generateLockMap(input) {
+  const lockMap = new Map();
+  input
+    .filter(member => member.lock)
+    .forEach(member => {
+      const entry = lockMap.has(member.lock) ? lockMap.get(member.lock) : [];
+      entry.push(member.name);
+      lockMap.set(member.lock, entry);
+    });
+  return lockMap;
+}
 
 function mapPeopleToCapabilities(members) {
   // filter out the members who can't do things
@@ -102,6 +164,7 @@ function mapPeopleToCapabilities(members) {
     peopleWithCapabilities.map(i => [
       i.name,
       {
+        name: i.name,
         capabilities: i.capabilities,
         history: i.history
       }
@@ -124,4 +187,24 @@ function populateRoles(databaseRoles) {
     }
   });
   return roles;
+}
+
+function isRoleLocked(constraints, roleName) {
+  return constraints[roleName] && constraints[roleName] > 0;
+}
+
+function retrieveSchedule(munkresMatrix) {
+  console.info(
+    "STATS: Preprocessing Execution time: %dms",
+    new Date() - STATSTARTTIME
+  );
+
+  const STATSBEFOREMUNKRES = new Date();
+  const schedule = munkres(munkres.make_cost_matrix(munkresMatrix));
+  console.info(
+    "STATS: Munkres Execution time: %dms",
+    new Date() - STATSBEFOREMUNKRES
+  );
+  schedule.sort((a, b) => a[1] - b[1]);
+  return schedule;
 }
