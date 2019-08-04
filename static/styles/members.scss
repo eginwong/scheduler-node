@@ -1,0 +1,52 @@
+@import "./variables";
+
+.members__container { 
+    display: flex;
+    justify-content: center;
+}
+
+.members__card {
+    margin: 30px;
+    overflow-x: auto !important; // the mui-card root will override otherwise
+    width: 80%;
+
+    tr > td {
+        padding: 1em;
+    }
+
+    tr > th {
+        padding: 0 1em 1em 1em;
+    }
+
+    tr:not(:first-child) {
+        border-top: 1px solid lightgray;
+    }
+}
+
+.members__card__actions {
+    justify-content: flex-end;
+}
+
+.members__card--header {
+    th {
+        color: $highlight;
+    }
+}
+
+#snackbar--content { // to have greater specificity than mui root styles
+    background-color: #389337;
+    display: flex;
+    align-items: center;
+}
+
+.snackbar--side-icon {
+    margin-right: 10px;
+}
+
+.snackbar--button-icon:focus {
+    outline: none;
+}
+
+.snackbar--icon {
+    font-size: 20px;
+}
