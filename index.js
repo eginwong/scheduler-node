@@ -11,16 +11,14 @@ fs.readFile("source.json", (err, data) => {
   // create hashmap to more easily extract members from json
   const peopleMap = mapPeopleToCapabilities(database.members);
 
-  // metadata for scheduler run
-  const scheduleDate = moment(new Date());
-
   // convert people with capabilities into an array of values for cost matrix
   // start by retrieving the user object from the peopleMap to compute values
-
   const munkresMatrix = [];
   const peoples = []; // filtered peoples
   const roleArray = populateRoles(database.roles);
 
+  // metadata for scheduler run
+  const scheduleDate = moment(new Date());
   const mockInput = [
     {
       name: "munaf-matadar",
@@ -37,13 +35,13 @@ fs.readFile("source.json", (err, data) => {
       name: "dana-woo"
     },
     {
-      name: "keegan-grimminck",
+      name: "keegan-grimminck"
     },
     {
       name: "eric-wong"
     },
     {
-      name: "dan-barmasch",
+      name: "dan-barmasch"
     },
     {
       name: "bamike-kuyoro"
@@ -65,17 +63,14 @@ fs.readFile("source.json", (err, data) => {
     }
   ];
 
-  // #0 preprocess to know which roles should be removed from matrix
-  const lockMap = generateLockMap(mockInput);
-
-  const globalConstraints = {};
-  for (const [key, val] of lockMap.entries()) {
-    globalConstraints[key] = val.length;
-  }
-
-  if(mockInput.length < roleArray.length) {
+  // simple validation
+  if (mockInput.length < roleArray.length) {
     throw new Error("Insufficient members to create schedule");
   }
+
+  // #0 preprocess to know which roles should be removed from matrix
+  const lockMap = generateLockMap(mockInput);
+  const globalConstraints = createConstraintsObject(lockMap);
 
   mockInput
     .filter(member => !member.lock) // #1 if you're locked for a role, get filtered out.
@@ -93,24 +88,20 @@ fs.readFile("source.json", (err, data) => {
         if (member.capabilities[role.name] > 0) {
           // check lastDate
           const lastRoleDate = findLastRoleDate(member.history[role.name]);
-
-          if (lastRoleDate) {
-            munkresVal = moment(scheduleDate).diff(lastRoleDate, "days");
-          }
+          munkresVal = lastRoleDate
+            ? moment(scheduleDate).diff(lastRoleDate, "days")
+            : munkresVal;
         } else {
           munkresVal = -munkresVal;
         }
 
-        let count = 0;
-
-        while (count != role.quantity) {
+        for (let count = 0; count < role.quantity; count++) {
           if (isRoleLocked(localConstraints, role.name)) {
             // update local constraints object
             localConstraints[role.name]--;
           } else {
             userHeuristic.push(munkresVal);
           }
-          count++;
         }
       }
 
@@ -191,6 +182,14 @@ function populateRoles(databaseRoles) {
 
 function isRoleLocked(constraints, roleName) {
   return constraints[roleName] && constraints[roleName] > 0;
+}
+
+function createConstraintsObject(lockMap) {
+  const globalConstraints = {};
+  for (const [key, val] of lockMap.entries()) {
+    globalConstraints[key] = val.length;
+  }
+  return globalConstraints;
 }
 
 function retrieveSchedule(munkresMatrix) {
