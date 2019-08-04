@@ -87,17 +87,41 @@ function GetData() {
 			},
 			{
 			  "name": "shweta-mehra",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
 			  "name": "shawn-simmons",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
 			  "name": "ryan-paranagama",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
@@ -122,22 +146,54 @@ function GetData() {
 			},
 			{
 			  "name": "lisa-simms",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
 			  "name": "devin-bialo",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
 			  "name": "david-porretta",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
 			  "name": "david-cronk",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
@@ -205,7 +261,15 @@ function GetData() {
 			},
 			{
 			  "name": "jason-cronk",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
@@ -268,7 +332,15 @@ function GetData() {
 			},
 			{
 			  "name": "priyanka-shukla",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
@@ -293,7 +365,15 @@ function GetData() {
 			},
 			{
 			  "name": "julie-tyios",
-			  "capabilities": {},
+			  "capabilities": {
+				"toastmaster": 0,
+				"grammarian": 0,
+				"evaluator": 0,
+				"speaker": 0,
+				"topicsmaster": 0,
+				"timekeeper": 0,
+				"general-evaluator": 0
+			  },
 			  "history": {}
 			},
 			{
@@ -696,7 +776,7 @@ function GetData() {
 			  }
 			},
 			{
-			  "name": "joanna-zkaradzinski",
+			  "name": "joanna-szkaradzinski",
 			  "capabilities": {
 				"toastmaster": 1,
 				"grammarian": 1,
