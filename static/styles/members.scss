@@ -8,7 +8,7 @@
 .members__card {
     margin: 30px;
     overflow-x: auto !important; // the mui-card root will override otherwise
-    width: 80%;
+    max-width: 80%;
 
     tr > td {
         padding: 1em;

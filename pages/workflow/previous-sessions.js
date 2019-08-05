@@ -11,8 +11,6 @@ export default () => {
 
   return (
     <Workflow>
-      <h1>Previous Sessions</h1>
-
       <div>
         {HistoryService.GetHistory().map((data, i) => {
           return (
