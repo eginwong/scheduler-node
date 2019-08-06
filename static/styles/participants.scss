@@ -1,0 +1,73 @@
+@import "./variables";
+
+.participants__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.participants__search { 
+    width: 80%;
+    &.MuiCard-root {
+        // required to avoid clipping dropdown from card
+        overflow: visible;
+    }
+}
+
+.participants__search--content {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    width: 100%;
+    
+    &.MuiCardContent-root:last-child {
+        padding-bottom: 16px;
+    }
+
+    label {
+        color: $primary;
+        font-size: 15px;
+        line-height: 2.3em;
+        margin: 0.1em 0 0 0;
+        text-align: center;
+    }
+}
+
+.participants__card {
+    margin: 30px;
+    overflow-x: auto !important; // the mui-card root will override otherwise
+    width: 80%;
+
+    table {
+        margin-top: 12px;
+        width: 100%;
+    }
+
+    tr > td {
+        padding: 1em;
+    }
+
+    tr > th {
+        padding: 0 1em 1em 1em;
+    }
+
+    tr:not(:first-child) {
+        border-top: 1px solid lightgray;
+    }
+}
+
+.participants__card__head-actions { 
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.participants__card--index {
+    text-align: right;
+}
+
+.participants__card--header {
+    th {
+        color: $highlight;
+    }   
+}
