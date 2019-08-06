@@ -1,6 +1,7 @@
 import Workflow from "./index";
 import { CapCase } from "../../src/utils/string.utils";
 import MemberService from "../../src/services/member.service";
+import RoleService from "../../src/services/role.service";
 import Checkbox from "../../components/checkbox";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -16,7 +17,7 @@ import "../../static/styles/members.scss";
 let roles, members;
 
 export default function Members() {
-  roles = MemberService.GetRoles()
+  roles = RoleService.GetRoles()
     .filter((r, i, a) => a.indexOf(r) === i)
     .slice();
   members = MemberService.GetMembers().map(m => JSON.parse(JSON.stringify(m)));
