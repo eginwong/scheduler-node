@@ -25,29 +25,35 @@ export default class NewSchedule extends Component {
     super(props);
     this.state = {
       members: membersDto,
-      participants: []
+	  participants: []
     };
   }
 
   handleSelect = opt => {
     this.setState({
-      members: this.state.members.filter(member => member.label !== opt.label),
-      participants: this.state.participants.concat(opt.value)
+      members: this.state.members.filter(member => member.label !== opt.label), // removes member from selection
+	  participants: this.state.participants.concat(opt.value),
     });
   };
 
   generateSchedule = () => {
-	console.log(ScheduleService.CreateSchedule(new Date(), this.state.participants));
-	// route to success page
-  }
+    console.log(
+      ScheduleService.CreateSchedule(new Date(), this.state.participants)
+    );
+    // route to success page
+  };
 
-//   removeParticipant = event => {
-// 	this.state.participants.splice(event, 1);
-//     this.setState({
-//       members: members,
-//       participants: this.state.participants
-//     });
-//   }
+  removeParticipant = event => {
+	const member = this.state.participants.splice(event, 1)[0];
+	const participant = { 
+		label: CapCase(member.name),
+		value: member
+	}
+    this.setState({
+      members: this.state.members.concat(participant),
+      participants: this.state.participants
+    });
+  };
 
   render() {
     return (
@@ -62,6 +68,7 @@ export default class NewSchedule extends Component {
                 id="findParticipant"
                 value={null}
                 onChange={this.handleSelect}
+                changeHandler={this.changeHandler}
                 options={this.state.members}
                 placeholder="Type or select member name..."
               />
@@ -72,7 +79,12 @@ export default class NewSchedule extends Component {
             <CardContent>
               <div className="participants__card__head-actions">
                 <button>MM/DD/YYYY ICON</button>
-                <button className="btn btn-primary" onClick={this.generateSchedule}>Generate Schedule</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={this.generateSchedule}
+                >
+                  Generate Schedule
+                </button>
               </div>
               <table>
                 <tbody>
@@ -93,9 +105,9 @@ export default class NewSchedule extends Component {
                       </td>
                       <td key={"name_" + i}>{CapCase(particip.name)}</td>
                       <td key={"volunrole_" + i}>{particip.volunRole}</td>
-                      {/* <td key={"close_" + i}>
-                        <CloseIcon onClick={this.removeParticipant} />
-                      </td> */}
+                      <td key={"close_" + i}>
+                        <CloseIcon onClick={() => this.removeParticipant(i)} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
