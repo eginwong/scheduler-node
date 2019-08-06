@@ -2,10 +2,11 @@
 // TODO: save proposed schedule to database service and export
 
 import DatabaseService from "./database.service";
+import MunkresService from "./munkres.service";
 
 const ScheduleService = {
-    ExportSession,
     CreateSchedule,
+    UpdateSession,
     SendEmail
 };
 
@@ -13,19 +14,25 @@ export default ScheduleService;
 
 // TODO: need to load up the database first, on lifecycle
 let database;
-let session;
 
-function ExportSession() {
-    DatabaseService.SetData(database); // TODO: is this async?
-    return DatabaseService.Export();
+function UpdateSession(database) {
+    DatabaseService.SetData(database);
 }
 
-function UpdateSession() {
-    database.session = {}
-}
+/**
+ * 
+ * @param {*} scheduleDate 
+ * @param {*} participants 
+ */
+function CreateSchedule(scheduleDate, participants) {
+    database = database ? database : DatabaseService.GetData().database;
 
-function CreateSchedule() {
-    // use munkres here
+    database.session = {
+        scheduleDate,
+        participants
+    }
+
+    return MunkresService.GenerateSchedule(scheduleDate, participants);
 }
 
 function SendEmail() {
