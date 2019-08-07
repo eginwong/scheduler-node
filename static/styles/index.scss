@@ -7,6 +7,32 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+
+	&::before, &::after {
+		content: "";
+		display: block;
+		position: fixed;
+		z-index: -1;
+	}
+
+	$circleDim: 1000px;
+
+	&::before {
+		background: rgba($primary, 0.25);
+		border-radius: 100%;
+		height: $circleDim;
+		width: $circleDim;
+		top: calc(55% - #{$circleDim});
+		right: calc(45% - #{$circleDim});
+	}
+
+	&::after {
+		background: rgba($primary, 0.15);
+		border-radius: 100%;
+		height: $circleDim/4;
+		width: $circleDim/4;
+		bottom: calc(35% - #{$circleDim/4});
+	}
 }
 
 .index--contents {

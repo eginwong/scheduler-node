@@ -10,12 +10,21 @@
     overflow-x: auto !important; // the mui-card root will override otherwise
     max-width: 80%;
 
+    &--content {
+        height: 500px;
+        padding: 0 16px !important; // TODO: Move vendor import order ahead of our styles
+        overflow-y: scroll;
+    }
+
     tr > td {
         padding: 1em;
     }
 
     tr > th {
-        padding: 0 1em 1em 1em;
+        position: sticky;
+        top: 0;
+        padding: 1em 1em 1em 1em;
+        background: white;
     }
 
     tr:not(:first-child) {

@@ -37,7 +37,7 @@ export default function Members() {
       <section>
         <div className="members__container">
           <Card className="members__card">
-            <CardContent>
+            <CardContent className="members__card--content">
               <table>
                 <tbody>
                   <tr className="members__card--header">
