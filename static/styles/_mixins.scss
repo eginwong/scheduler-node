@@ -7,3 +7,10 @@
     background-color: $primary;
     border: 1px solid $primary;
 }
+
+@mixin css-circles($color, $rad) { 
+    background: $color;
+    border-radius: 100%;
+    height: $rad;
+    width: $rad;
+}
