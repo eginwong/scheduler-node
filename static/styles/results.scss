@@ -1,0 +1,27 @@
+@import "variables";
+
+.results__title {
+    & > .MuiTypography-root {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.results__container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &__card {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    &__card__content--role {
+        color: $primary;
+    }
+}
+
+.MuiCardContent-root {
+    padding: 5px !important;
+}
