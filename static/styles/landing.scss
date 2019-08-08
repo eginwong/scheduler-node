@@ -6,40 +6,63 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
 
-.landing--logo {
-	margin-bottom: 50px;
-	width: 125px;
-}
+    // circles
+    &::before, &::after {
+		content: "";
+		display: block;
+		position: fixed;
+		z-index: -1;
+	}
 
-.landing--title {
-	font-size: 38px;
-	margin-bottom: 50px;
-}
+	$circleDim: 300px;
 
-.landing--routes {
-    display: flex;
-    justify-content: space-between;
-}
+	&::before {
+		@include css-circles(rgba($primary, 0.18), $circleDim);
+		top: calc(25% - #{$circleDim});
+		left: calc(25% - #{$circleDim});
+	}
 
-.landing--button {
-    margin: 15px;
-    padding: 12px;
-    width: 140px;
+	&::after {
+		@include css-circles(rgba($primary, 0.14), $circleDim * 2);
+		bottom: calc(25% - #{$circleDim * 2});
+		right: calc(20% - #{$circleDim * 2});
+	}
 
-    &.btn-primary {
-        @include btn-primary-override;
-        
-        & > a {
-            color: white;
-        }
+    &--logo {
+        margin-bottom: 50px;
+        width: 125px;
     }
     
-    &.btn-light {
-        @include btn-light-override;
-        & > a {
-            color: $primary;
+    &--title {
+        font-size: 38px;
+        margin-bottom: 50px;
+    }
+    
+    &--routes {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    &--button {
+        margin: 15px;
+        padding: 12px;
+        width: 140px;
+    
+        &.btn-primary {
+            @include btn-primary-override;
+            
+            & > a {
+                color: white;
+            }
+        }
+        
+        &.btn-light {
+            @include btn-light-override;
+            & > a {
+                color: $primary;
+            }
         }
     }
+
 }

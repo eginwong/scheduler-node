@@ -1,7 +1,7 @@
 .session--card {
     margin: 30px;
-}
-
-.session--card__participants {
-    font-size: 18px;
+    
+    &__participants {
+        font-size: 18px;
+    }
 }

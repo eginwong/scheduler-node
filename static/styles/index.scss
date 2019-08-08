@@ -18,43 +18,38 @@
 	$circleDim: 1000px;
 
 	&::before {
-		background: rgba($primary, 0.25);
-		border-radius: 100%;
-		height: $circleDim;
-		width: $circleDim;
+		@include css-circles(rgba($primary, 0.18), $circleDim);
 		top: calc(55% - #{$circleDim});
 		right: calc(45% - #{$circleDim});
 	}
 
 	&::after {
-		background: rgba($primary, 0.15);
-		border-radius: 100%;
-		height: $circleDim/4;
-		width: $circleDim/4;
-		bottom: calc(35% - #{$circleDim/4});
+		@include css-circles(rgba($primary, 0.14), $circleDim / 4);
+		bottom: calc(19% - #{$circleDim / 4});
+		left: calc(18% - #{$circleDim / 4});
 	}
-}
 
-.index--contents {
-	margin-left: 100px;
-}
+	&--contents {
+		margin-left: 100px;
+	}
+	
+	&--logo {
+		margin-bottom: 100px;
+		width: 125px;
+	}
 
-.index--logo {
-	margin-bottom: 100px;
-	width: 125px;
-}
+	&--title {
+		font-size: 38px;
+		margin-bottom: 75px;
+	}
 
-.index--title {
-	font-size: 38px;
-	margin-bottom: 75px;
-}
-
-.index--button {
-	margin-bottom: 25px;
-	&.btn-light {
-		@include btn-light-override;
-		> a {
-			color: $primary;
+	&--button {
+		margin-bottom: 25px;
+		&.btn-light {
+			@include btn-light-override;
+			> a {
+				color: $primary;
+			}
 		}
 	}
 }

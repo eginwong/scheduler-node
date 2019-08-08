@@ -12,25 +12,26 @@
         // required to avoid clipping dropdown from card
         overflow: visible;
     }
-}
 
-.participants__search--content {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    width: 100%;
+    &--content {
+        display: grid;
+        grid-template-columns: 1fr 6fr;
+        width: 100%;
+        
+        &.MuiCardContent-root:last-child {
+            padding-bottom: 16px;
+        }
     
-    &.MuiCardContent-root:last-child {
-        padding-bottom: 16px;
-    }
-
-    label {
-        color: $primary;
-        font-size: 15px;
-        line-height: 2.3em;
-        margin: 0.1em 0 0 0;
-        text-align: center;
+        label {
+            color: $primary;
+            font-size: 15px;
+            line-height: 2.3em;
+            margin: 0.1em 0 0 0;
+            text-align: center;
+        }
     }
 }
+
 
 .participants__card {
     margin: 30px;
@@ -53,21 +54,21 @@
     tr:not(:first-child) {
         border-top: 1px solid lightgray;
     }
-}
 
-.participants__card__head-actions { 
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-}
-
-.participants__card--index {
-    text-align: right;
-}
-
-.participants__card--header {
-    th {
-        color: $highlight;
-    }   
+    &__head-actions { 
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+    }
+    
+    &--index {
+        text-align: right;
+    }
+    
+    &--header {
+        th {
+            color: $highlight;
+        }   
+    }
 }

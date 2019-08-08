@@ -30,17 +30,18 @@
     tr:not(:first-child) {
         border-top: 1px solid lightgray;
     }
-}
 
-.members__card__actions {
-    justify-content: flex-end;
-}
-
-.members__card--header {
-    th {
-        color: $highlight;
+    &__actions {
+        justify-content: flex-end;
+    }
+    
+    &--header {
+        th {
+            color: $highlight;
+        }
     }
 }
+
 
 #snackbar--content { // to have greater specificity than mui root styles
     background-color: #389337;
@@ -48,14 +49,16 @@
     align-items: center;
 }
 
-.snackbar--side-icon {
-    margin-right: 10px;
-}
+.snackbar {
+    &--side-icon {
+        margin-right: 10px;
+    }
 
-.snackbar--button-icon:focus {
-    outline: none;
-}
-
-.snackbar--icon {
-    font-size: 20px;
+    &--button-icon:focus {
+        outline: none;
+    }
+    
+    &--icon {
+        font-size: 20px;
+    }
 }
