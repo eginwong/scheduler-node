@@ -10,7 +10,6 @@ import "../../static/styles/participants.scss";
 
 import Select from "react-select";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -31,8 +30,8 @@ export default class NewSchedule extends Component {
       members: membersDto,
       participants: [],
       modalOpen: false,
-	  results: []
-	};
+      results: []
+    };
   }
 
   handleSelect = opt => {
@@ -47,23 +46,22 @@ export default class NewSchedule extends Component {
     if (this.state.participants.length < roles.length) {
       alert("Sorry, not enough participants to schedule a meeting.");
     } else {
-		this.setState({
-		  modalOpen: true,
-		  results: ScheduleService.CreateSchedule(
-			new Date(),
-			this.state.participants
-		  )
-		});
-	}
+      this.setState({
+        modalOpen: true,
+        results: ScheduleService.CreateSchedule(
+          new Date(),
+          this.state.participants
+        )
+      });
+    }
   };
 
   handleClose = value => {
-	  console.log(value);
-	  if(value === "SendEmail") {
-
-	  } else {
-		this.setState({ modalOpen: false });
-	  }
+    console.log(value);
+    if (value === "SendEmail") {
+    } else {
+      this.setState({ modalOpen: false });
+    }
   };
 
   removeParticipant = event => {
@@ -82,24 +80,8 @@ export default class NewSchedule extends Component {
       <Workflow>
         <section className="participants__container">
           <Card className="participants__search">
-            <CardContent className="participants__search--content">
-              <label htmlFor="findParticipant">
-                <span>Add Participants</span>
-              </label>
-              <Select
-                id="findParticipant"
-                value={null}
-                onChange={this.handleSelect}
-                changeHandler={this.changeHandler}
-                options={this.state.members}
-                placeholder="Type or select member name..."
-              />
-            </CardContent>
-          </Card>
-
-          <Card className="participants__card">
             <CardContent>
-              <div className="participants__card__head-actions">
+              <div className="participants__search--header">
                 <button>MM/DD/YYYY ICON</button>
                 <button
                   className="btn btn-primary"
@@ -110,9 +92,28 @@ export default class NewSchedule extends Component {
                 <ResultsDialog
                   results={this.state.results}
                   open={this.state.modalOpen}
-				  onClose={this.handleClose}
+                  onClose={this.handleClose}
                 />
               </div>
+
+              <div className="participants__search--content">
+                <label htmlFor="findParticipant">
+                  <span>Add Participants</span>
+                </label>
+                <Select
+                  id="findParticipant"
+                  value={null}
+                  onChange={this.handleSelect}
+                  changeHandler={this.changeHandler}
+                  options={this.state.members}
+                  placeholder="Type or select member name..."
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className={this.state.participants.length > 0 ? 'participants__card' : 'hidden'}>
+            <CardContent className="participants__card--content">
               <table>
                 <tbody>
                   <tr className="participants__card--header">
@@ -140,11 +141,6 @@ export default class NewSchedule extends Component {
                 </tbody>
               </table>
             </CardContent>
-            <CardActions className="members__card__actions">
-              {/* <Button size="small" color="primary" onClick={Save}>
-                Save Changes
-              </Button> */}
-            </CardActions>
           </Card>
           <button
             className="btn btn-primary"
