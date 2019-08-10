@@ -75,9 +75,16 @@ function GenerateSchedule(scheduleDate, participants) {
   for (let index = 0; index < roleArray.length; index++) {
     const roleName = roleArray[index];
     if (lockMap.get(roleName) && lockMap.get(roleName).length > 0) {
-      resultArray.push([roleName, lockMap.get(roleName).pop()]);
+      resultArray.push({
+        role: roleName, 
+        member: lockMap.get(roleName).pop()
+      });
     } else {
-      resultArray.push([roleName, peoples[schedule[scheduleIndex][0]]]);
+      resultArray.push(
+        {
+          role: roleName, 
+          member: peoples[schedule[scheduleIndex][0]]
+        });
       scheduleIndex++;
     }
   }

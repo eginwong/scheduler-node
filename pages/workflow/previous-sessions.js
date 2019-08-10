@@ -8,11 +8,12 @@ import "../../static/styles/previous-sessions.scss";
 
 export default () => {
   const DATE_OPTIONS = { year: "numeric", month: "long", day: "numeric" };
+  const history = HistoryService.GetHistory();
 
   return (
     <Workflow>
       <div>
-        {HistoryService.GetHistory().map((data, i) => {
+        {history.map((data, i) => {
           return (
             <Card className="session__card" key={"card" + i}>
               <CardContent>
@@ -24,7 +25,10 @@ export default () => {
                 </Typography>
                 <div className="session__card__container">
                   {data.roles.map((role, i) => (
-                    <Card key={"card" + i} className="session__card__container--card">
+                    <Card
+                      key={"card" + i}
+                      className="session__card__container--card"
+                    >
                       <CardContent
                         key={"cardContent" + i}
                         className="session__card__container--card-content"
@@ -41,6 +45,15 @@ export default () => {
             </Card>
           );
         })}
+      </div>
+      <div className={history.length > 0 ? "hidden" : ""}>
+        <Card className="session__card">
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              No previous sessions available.
+            </Typography>
+          </CardContent>
+        </Card>
       </div>
     </Workflow>
   );

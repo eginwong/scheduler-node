@@ -16,8 +16,10 @@ export default function ResultsDialog(props) {
   const setFullWidth = true;
   const maxWidthDim = "md";
 
-  const { onClose, results, scheduleDate, open } = props;
+  const { onClose, scheduleDate, open } = props;
   const DATE_OPTIONS = { year: "numeric", month: "long", day: "numeric" };
+
+  const results = props.results ? props.results : [];
 
   // timezone fix: https://stackoverflow.com/a/14569783
   const dateType = new Date(scheduleDate);
@@ -51,9 +53,9 @@ export default function ResultsDialog(props) {
               className="results__container__card__content"
             >
               <h4 className="results__container__card__content--role">
-                {CapCase(res[0])}
+                {CapCase(res.role)}
               </h4>
-              <h6>{CapCase(res[1])}</h6>
+              <h6>{CapCase(res.member)}</h6>
             </CardContent>
           </Card>
         ))}
