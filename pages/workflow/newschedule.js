@@ -12,6 +12,8 @@ import Select from "react-select";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CloseIcon from "@material-ui/icons/Close";
+import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 const members = MemberService.GetMembers().map(m =>
   JSON.parse(JSON.stringify(m))
@@ -29,6 +31,7 @@ export default class NewSchedule extends Component {
     this.state = {
       members: membersDto,
       participants: [],
+      scheduleDate: moment(new Date(), "YYYY-M-D"),
       modalOpen: false,
       results: []
     };
@@ -41,6 +44,12 @@ export default class NewSchedule extends Component {
     });
   };
 
+  setScheduleDate = e => {
+    this.setState({
+      scheduleDate: moment(e.target.value, "YYYY-M-D")
+    });
+  }
+
   generateSchedule = () => {
     // validation
     if (this.state.participants.length < roles.length) {
@@ -49,16 +58,19 @@ export default class NewSchedule extends Component {
       this.setState({
         modalOpen: true,
         results: ScheduleService.CreateSchedule(
-          new Date(),
+          this.state.scheduleDate,
           this.state.participants
-        )
-      });
+          )
+        });
     }
   };
 
   handleClose = value => {
-    console.log(value);
     if (value === "SendEmail") {
+    } else if(value === "SaveSession") {
+      this.setState({ modalOpen: false });
+    } else if(value === "SaveHistory") {
+      this.setState({ modalOpen: false });
     } else {
       this.setState({ modalOpen: false });
     }
@@ -82,7 +94,17 @@ export default class NewSchedule extends Component {
           <Card className="participants__search">
             <CardContent>
               <div className="participants__search--header">
-                <button>MM/DD/YYYY ICON</button>
+              <form noValidate>
+              <TextField
+                label="Session Date"
+                type="date"
+                defaultValue={new Date()}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(value) => this.setScheduleDate(value)}
+              />
+            </form>
                 <button
                   className="btn btn-primary"
                   onClick={this.generateSchedule}
@@ -91,6 +113,7 @@ export default class NewSchedule extends Component {
                 </button>
                 <ResultsDialog
                   results={this.state.results}
+                  scheduleDate={this.state.scheduleDate}
                   open={this.state.modalOpen}
                   onClose={this.handleClose}
                 />
@@ -142,12 +165,6 @@ export default class NewSchedule extends Component {
               </table>
             </CardContent>
           </Card>
-          <button
-            className="btn btn-primary"
-            onClick={() => console.log(DatabaseService.Export())}
-          >
-            Save and Export
-          </button>
         </section>
       </Workflow>
     );
