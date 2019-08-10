@@ -1,3 +1,5 @@
+import FileSaver from 'file-saver';
+
 const DatabaseService = {
 	SetData,
 	GetData,
@@ -981,12 +983,12 @@ function GetData() {
 
 function Export() {
 	if(data && data.database) {
-		return {
+		const blob = new Blob([JSON.stringify({
 			version,
 			modified: new Date(),
 			database: data.database,
 			session: data.session
-		}
+		}, null, 2)], {type: "application/json;charset=utf-8"});
+		FileSaver.saveAs(blob, "export.json");
 	}
-	return {};
 }

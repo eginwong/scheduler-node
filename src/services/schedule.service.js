@@ -6,33 +6,33 @@ import MunkresService from "./munkres.service";
 
 const ScheduleService = {
     CreateSchedule,
-    UpdateSession,
     SendEmail
 };
 
 export default ScheduleService;
 
 // TODO: need to load up the database first, on lifecycle
-let database;
-
-function UpdateSession(database) {
-    DatabaseService.SetData(database);
-}
+let data;
 
 /**
+ * Will create the schedule from Munkres and also update the global data with the session values.
  * 
- * @param {*} scheduleDate 
- * @param {*} participants 
+ * @param {*} scheduleDate  date for next generated schedule
+ * @param {*} participants  the members that are available for the next session
  */
 function CreateSchedule(scheduleDate, participants) {
-    database = database ? database : DatabaseService.GetData().database;
+    data = data ? data : DatabaseService.GetData();
 
-    database.session = {
+    data.session = {
         scheduleDate,
-        participants
+        participants,
+        results: MunkresService.GenerateSchedule(scheduleDate, participants)
     }
 
-    return MunkresService.GenerateSchedule(scheduleDate, participants);
+    // update database
+    DatabaseService.SetData(data);
+
+    return data.session.results;
 }
 
 function SendEmail() {

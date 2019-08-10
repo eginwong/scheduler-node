@@ -68,6 +68,7 @@ export default class NewSchedule extends Component {
   handleClose = value => {
     if (value === "SendEmail") {
     } else if(value === "SaveSession") {
+      DatabaseService.Export();
       this.setState({ modalOpen: false });
     } else if(value === "SaveHistory") {
       this.setState({ modalOpen: false });
