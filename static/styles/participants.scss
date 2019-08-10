@@ -1,4 +1,5 @@
 @import "./variables";
+@import "utility";
 
 .participants__container {
     display: flex;
@@ -7,15 +8,25 @@
 }
 
 .participants__search { 
+    margin: 15px; 
     width: 80%;
+
     &.MuiCard-root {
         // required to avoid clipping dropdown from card
         overflow: visible;
     }
 
+    &--header {
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 16px 16px 16px;
+    }
+
     &--content {
         display: grid;
         grid-template-columns: 1fr 6fr;
+        padding-top: 15px;
         width: 100%;
         
         &.MuiCardContent-root:last-child {
@@ -32,11 +43,17 @@
     }
 }
 
-
 .participants__card {
-    margin: 30px;
+    margin: 0px 30px 30px 30px;
     overflow-x: auto !important; // the mui-card root will override otherwise
     width: 80%;
+
+    &--content {
+        min-height: 80px;
+        max-height: 400px;
+        padding: 0 16px !important; // TODO: Move vendor import order ahead of our styles
+        overflow-y: scroll;
+    }
 
     table {
         margin-top: 12px;
@@ -48,18 +65,14 @@
     }
 
     tr > th {
-        padding: 0 1em 1em 1em;
+        position: sticky;
+        top: 0;
+        padding: 1em 1em 1em 1em;
+        background: white;
     }
 
     tr:not(:first-child) {
         border-top: 1px solid lightgray;
-    }
-
-    &__head-actions { 
-        border-bottom: 1px solid lightgray;
-        display: flex;
-        justify-content: space-between;
-        padding: 16px;
     }
     
     &--index {

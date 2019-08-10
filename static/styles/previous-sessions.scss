@@ -1,7 +1,25 @@
-.session--card {
+@import "variables";
+
+.session__card {
     margin: 30px;
-    
-    &__participants {
-        font-size: 18px;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__container--card {
+        margin: 10px;
+        max-width: 20%;
+        padding: 10px;
+    }
+
+    &__container--card-content-role {
+        color: $primary;
+    }
+
+    .MuiCardContent-root {
+        padding: 5px !important;
     }
 }
