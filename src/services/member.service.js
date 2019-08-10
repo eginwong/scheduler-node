@@ -12,15 +12,10 @@ let members;
 function InitData() {
 	const data = DatabaseService.GetData().database;
 	members = data.members.slice();
-
-	InitData = () => true;
 }
 
 function GetMembers() {
 	InitData();
-	GetMembers = function GetMembers() {
-		return members;
-	};
 	return members;
 }
 
