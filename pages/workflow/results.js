@@ -16,7 +16,11 @@ export default function ResultsDialog(props) {
   const setFullWidth = true;
   const maxWidthDim = "md";
 
-  const { onClose, results, open } = props;
+  const { onClose, results, scheduleDate, open } = props;
+  const DATE_OPTIONS = { year: "numeric", month: "long", day: "numeric" };
+
+  // timezone fix: https://stackoverflow.com/a/14569783
+  const dateType = new Date(scheduleDate);
 
   function handleClose(val) {
     onClose(val);
@@ -31,7 +35,10 @@ export default function ResultsDialog(props) {
       open={open}
     >
       <DialogTitle className="results__title">
-        <span>Proposed Schedule</span>
+        <span>
+          Proposed Schedule for{" "}
+          {dateType.toLocaleDateString("en-US", DATE_OPTIONS)}
+        </span>
         <span>
           <CloseIcon onClick={() => handleClose("Cancel")} />
         </span>
