@@ -1,19 +1,15 @@
 import { Component } from "react";
 import Workflow from "./index";
 import { CapCase } from "../../src/utils/string.utils";
-import DatabaseService from "../../src/services/database.service";
-import ScheduleService from "../../src/services/schedule.service";
 import MemberService from "../../src/services/member.service";
-import RoleService from "../../src/services/role.service";
-import ResultsDialog from "./results";
 import "../../static/styles/participants.scss";
 
 import Select from "react-select";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CloseIcon from "@material-ui/icons/Close";
-import TextField from "@material-ui/core/TextField";
 import moment from "moment";
+import SearchHeader from "./search-header";
 
 const members = MemberService.GetMembers().map(m =>
   JSON.parse(JSON.stringify(m))
@@ -23,8 +19,6 @@ const membersDto = members.map(m => {
   return { value: m, label: CapCase(m.name) };
 });
 
-const roles = RoleService.GetRoles().map(r => JSON.parse(JSON.stringify(r)));
-
 export default class NewSchedule extends Component {
   constructor(props) {
     super(props);
@@ -32,8 +26,6 @@ export default class NewSchedule extends Component {
       members: membersDto,
       participants: [],
       scheduleDate: moment(new Date(), "YYYY-M-D"),
-      modalOpen: false,
-      results: []
     };
   }
 
@@ -42,39 +34,6 @@ export default class NewSchedule extends Component {
       members: this.state.members.filter(member => member.label !== opt.label), // removes member from selection
       participants: this.state.participants.concat(opt.value)
     });
-  };
-
-  setScheduleDate = e => {
-    this.setState({
-      scheduleDate: moment(e.target.value, "YYYY-M-D")
-    });
-  }
-
-  generateSchedule = () => {
-    // validation
-    if (this.state.participants.length < roles.length) {
-      alert("Sorry, not enough participants to schedule a meeting.");
-    } else {
-      this.setState({
-        modalOpen: true,
-        results: ScheduleService.CreateSchedule(
-          this.state.scheduleDate,
-          this.state.participants
-          )
-        });
-    }
-  };
-
-  handleClose = value => {
-    if (value === "SendEmail") {
-    } else if(value === "SaveSession") {
-      DatabaseService.Export();
-      this.setState({ modalOpen: false });
-    } else if(value === "SaveHistory") {
-      this.setState({ modalOpen: false });
-    } else {
-      this.setState({ modalOpen: false });
-    }
   };
 
   removeParticipant = event => {
@@ -94,31 +53,7 @@ export default class NewSchedule extends Component {
         <section className="participants__container">
           <Card className="participants__search">
             <CardContent>
-              <div className="participants__search--header">
-              <form noValidate>
-              <TextField
-                label="Session Date"
-                type="date"
-                defaultValue={new Date()}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(value) => this.setScheduleDate(value)}
-              />
-            </form>
-                <button
-                  className="btn btn-primary"
-                  onClick={this.generateSchedule}
-                >
-                  Generate Schedule
-                </button>
-                <ResultsDialog
-                  results={this.state.results}
-                  scheduleDate={this.state.scheduleDate}
-                  open={this.state.modalOpen}
-                  onClose={this.handleClose}
-                />
-              </div>
+              <SearchHeader participants={this.state.participants} />
 
               <div className="participants__search--content">
                 <label htmlFor="findParticipant">
@@ -136,7 +71,13 @@ export default class NewSchedule extends Component {
             </CardContent>
           </Card>
 
-          <Card className={this.state.participants.length > 0 ? 'participants__card' : 'hidden'}>
+          <Card
+            className={
+              this.state.participants.length > 0
+                ? "participants__card"
+                : "hidden"
+            }
+          >
             <CardContent className="participants__card--content">
               <table>
                 <tbody>

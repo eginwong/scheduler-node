@@ -16,13 +16,6 @@
         overflow: visible;
     }
 
-    &--header {
-        border-bottom: 1px solid lightgray;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 16px 16px 16px;
-    }
-
     &--content {
         display: grid;
         grid-template-columns: 1fr 6fr;
