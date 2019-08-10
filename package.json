@@ -24,6 +24,7 @@
     "@material-ui/styles": "^4.3.0",
     "@zeit/next-sass": "^1.0.1",
     "clsx": "^1.0.4",
+    "file-saver": "^2.0.2",
     "moment": "^2.24.0",
     "munkres-js": "^1.2.2",
     "next": "^9.0.2",
