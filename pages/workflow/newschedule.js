@@ -2,6 +2,7 @@ import { Component } from "react";
 import Workflow from "./index";
 import { CapCase } from "../../src/utils/string.utils";
 import MemberService from "../../src/services/member.service";
+import DatabaseService from "../../src/services/database.service";
 import "../../static/styles/participants.scss";
 
 import Select from "react-select";
@@ -22,10 +23,14 @@ const membersDto = members.map(m => {
 export default class NewSchedule extends Component {
   constructor(props) {
     super(props);
+    const session = DatabaseService.GetData().session;
     this.state = {
       members: membersDto,
-      participants: [],
-      scheduleDate: moment(new Date(), "YYYY-M-D"),
+      participants: session && session.participants ? session.participants : [],
+      scheduleDate:
+        session && session.scheduleDate
+          ? moment(session.scheduleDate, "YYYY-M-D")
+          : moment(new Date(), "YYYY-M-D")
     };
   }
 
@@ -53,7 +58,7 @@ export default class NewSchedule extends Component {
         <section className="participants__container">
           <Card className="participants__search">
             <CardContent>
-              <SearchHeader participants={this.state.participants} />
+              <SearchHeader scheduleDate={this.state.scheduleDate} participants={this.state.participants} />
 
               <div className="participants__search--content">
                 <label htmlFor="findParticipant">
