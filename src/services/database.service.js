@@ -975,9 +975,6 @@ function GetData() {
 			}
 		  ]
 		},
-		"session": {
-		  "scheduleDate": "2020-07-31 15:33:17"
-		}
 	};
 }
 

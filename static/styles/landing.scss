@@ -48,6 +48,10 @@
         margin: 15px;
         padding: 12px;
         width: 140px;
+
+        & > a:hover {
+            text-decoration: none;
+        }
     
         &.btn-primary {
             @include btn-primary-override;

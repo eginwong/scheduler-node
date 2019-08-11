@@ -15,7 +15,7 @@ export default class SearchHeader extends Component {
     super(props);
     this.state = {
       participants: this.props.participants,
-      scheduleDate: moment(new Date(), "YYYY-M-D"),
+      scheduleDate: this.props.scheduleDate,
       modalOpen: false,
       results: []
     };
@@ -23,7 +23,7 @@ export default class SearchHeader extends Component {
 
   // update props from parent
   componentWillReceiveProps(nextProps) {
-    this.setState({ participants: nextProps.participants });
+    this.setState({ participants: nextProps.participants, scheduleDate: nextProps.scheduleDate });
   }
 
   // need to explicitly say when to update prop if we want to receive parent prop update
@@ -31,7 +31,8 @@ export default class SearchHeader extends Component {
     return (
       this.state.participants.length !== nextProps.participants.length ||
       this.state.modalOpen !== nextProps.modalOpen ||
-      this.state.results !== nextProps.results
+      this.state.results !== nextProps.results ||
+      this.state.scheduleDate !== nextProps.scheduleDate
     );
   }
 
@@ -72,6 +73,7 @@ export default class SearchHeader extends Component {
     return (
       <div className="participants__search--header">
         <form noValidate>
+          {/* TODO: value is not updating dynamically from state when loaded via session */}
           <TextField
             label="Session Date"
             type="date"

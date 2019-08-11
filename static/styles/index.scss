@@ -49,6 +49,7 @@
 			@include btn-light-override;
 			> a {
 				color: $primary;
+				text-decoration: none;
 			}
 		}
 	}
