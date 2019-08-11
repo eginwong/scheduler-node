@@ -20,7 +20,7 @@ export default function Workflow(props) {
       <section>
         <header>
           <div className="workflow--container">
-            <AppBar position="static">
+            <AppBar position="static" className="workflow--appbar">
               <Toolbar className="workflow--toolbar">
                 <img src="/static/assets/tm-logo.png" className="workflow--logo" />
                 <Typography variant="h6" className="workflow--title">
@@ -32,15 +32,15 @@ export default function Workflow(props) {
               </Toolbar>
             </AppBar>
           </div>
-          <nav>
+          <nav className="workflow__nav">
             <Link href="/workflow/newschedule">
-              <a>New Schedule</a>
+              <a className="workflow__nav--link">New Schedule</a>
             </Link>
             <Link href="/workflow/previous-sessions">
-              <a>Previous Sessions</a>
+              <a className="workflow__nav--link">Previous Sessions</a>
             </Link>
             <Link href="/workflow/members">
-              <a>Members</a>
+              <a className="workflow__nav--link">Members</a>
             </Link>
           </nav>
         </header>
