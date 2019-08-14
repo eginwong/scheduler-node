@@ -1,6 +1,17 @@
-.participants__search--header {
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 16px 16px 16px;
+.participants__search {
+
+    &--header {
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 16px 16px 16px;
+    }
+
+    &--datepicker {
+        margin: 0 !important; // TODO: fix this css import order
+
+        input {
+            width: 90px;
+        }
+    }
 }

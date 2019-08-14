@@ -42,8 +42,7 @@
     width: 80%;
 
     &--content {
-        min-height: 80px;
-        max-height: 400px;
+        height: 400px;
         padding: 0 16px !important; // TODO: Move vendor import order ahead of our styles
         overflow-y: scroll;
     }
@@ -71,7 +70,7 @@
     &--index {
         text-align: right;
     }
-    
+
     &--header {
         th {
             color: $highlight;

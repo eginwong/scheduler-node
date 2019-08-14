@@ -86,6 +86,7 @@ export default class SearchHeader extends Component {
           <KeyboardDatePicker
             margin="normal"
             id="date-picker-dialog"
+            className="participants__search--datepicker"
             label="Session Date"
             format="MM/dd/yyyy"
             value={this.state.scheduleDate}
