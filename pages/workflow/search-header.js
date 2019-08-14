@@ -1,6 +1,11 @@
 import { Component } from "react";
 import moment from "moment";
-import TextField from "@material-ui/core/TextField";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 import DatabaseService from "../../src/services/database.service";
 import ScheduleService from "../../src/services/schedule.service";
@@ -23,7 +28,10 @@ export default class SearchHeader extends Component {
 
   // update props from parent
   componentWillReceiveProps(nextProps) {
-    this.setState({ participants: nextProps.participants, scheduleDate: nextProps.scheduleDate });
+    this.setState({
+      participants: nextProps.participants,
+      scheduleDate: nextProps.scheduleDate
+    });
   }
 
   // need to explicitly say when to update prop if we want to receive parent prop update
@@ -38,7 +46,7 @@ export default class SearchHeader extends Component {
 
   setScheduleDate = e => {
     this.setState({
-      scheduleDate: moment(e.target.value, "YYYY-M-D")
+      scheduleDate: moment(e, "YYYY-M-D")
     });
   };
 
@@ -63,6 +71,8 @@ export default class SearchHeader extends Component {
       DatabaseService.Export();
       this.setState({ modalOpen: false });
     } else if (value === "SaveHistory") {
+      DatabaseService.ProcessResults();
+      DatabaseService.Export();
       this.setState({ modalOpen: false });
     } else {
       this.setState({ modalOpen: false });
@@ -72,18 +82,19 @@ export default class SearchHeader extends Component {
   render() {
     return (
       <div className="participants__search--header">
-        <form noValidate>
-          {/* TODO: value is not updating dynamically from state when loaded via session */}
-          <TextField
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
             label="Session Date"
-            type="date"
-            defaultValue={new Date()}
-            InputLabelProps={{
-              shrink: true
+            format="MM/dd/yyyy"
+            value={this.state.scheduleDate}
+            onChange={this.setScheduleDate}
+            KeyboardButtonProps={{
+              "aria-label": "change date"
             }}
-            onChange={value => this.setScheduleDate(value)}
           />
-        </form>
+        </MuiPickersUtilsProvider>
         <button className="btn btn-primary" onClick={this.generateSchedule}>
           Generate Schedule
         </button>
