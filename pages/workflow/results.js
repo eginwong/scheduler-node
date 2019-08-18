@@ -16,7 +16,7 @@ export default function ResultsDialog(props) {
   const setFullWidth = true;
   const maxWidthDim = "md";
 
-  const { onClose, scheduleDate, open } = props;
+  const { onClose, scheduleDate, emailHref, open } = props;
   const DATE_OPTIONS = { year: "numeric", month: "long", day: "numeric" };
 
   const results = props.results ? props.results : [];
@@ -60,9 +60,9 @@ export default function ResultsDialog(props) {
           </Card>
         ))}
       </DialogContent>
-      <DialogActions>
+      <DialogActions className="results__actions">
         <Button onClick={() => handleClose("SendEmail")} color="primary">
-          Share
+          <a href={emailHref}>Share</a>
         </Button>
         <Button onClick={() => handleClose("SaveSession")} color="primary">
           Save Session
