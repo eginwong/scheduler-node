@@ -78,6 +78,7 @@ export default class NewSchedule extends Component {
                   <span>Add Participants</span>
                 </label>
                 <Select
+                  instanceId="find-participant-select-id"
                   id="findParticipant"
                   value={null}
                   onChange={this.handleSelect}
