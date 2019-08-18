@@ -27,8 +27,15 @@ export default class NewSchedule extends Component {
   constructor(props) {
     super(props);
     const session = DatabaseService.GetData().session;
+
+    let members = membersDto;
+    if(session && session.participants) {
+      const names = session.participants.map(particip => particip.name);
+      members = members.filter(member => !names.includes(member.value.name));
+    }
+
     this.state = {
-      members: membersDto,
+      members: members,
       participants: session && session.participants ? session.participants : [],
       scheduleDate:
         session && session.scheduleDate
