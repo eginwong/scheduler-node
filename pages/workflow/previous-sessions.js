@@ -18,7 +18,7 @@ export default () => {
             <Card className="session__card" key={"card" + i}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {new Date(data.sessionDate).toLocaleDateString(
+                  {new Date(data.scheduleDate.replace(/-/g, '\/')).toLocaleDateString(
                     "en-US",
                     DATE_OPTIONS
                   )}
@@ -34,9 +34,9 @@ export default () => {
                         className="session__card__container--card-content"
                       >
                         <h4 className="session__card__container--card-content-role">
-                          {CapCase(role.roleName)}
+                          {CapCase(role.role)}
                         </h4>
-                        <h6>{CapCase(role.user)}</h6>
+                        <h6>{CapCase(role.member)}</h6>
                       </CardContent>
                     </Card>
                   ))}
