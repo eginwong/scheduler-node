@@ -12,8 +12,36 @@ import ScheduleService from "../../src/services/schedule.service";
 import RoleService from "../../src/services/role.service";
 import ResultsDialog from "./results";
 import "../../static/styles/search-header.scss";
+import { config } from "../../components/config";
+import { CapCase } from "../../src/utils/string.utils";
 
 const roles = RoleService.GetRoles().map(r => JSON.parse(JSON.stringify(r)));
+
+function generateEmail(results, participants, scheduleDate) {
+  let mailToString = "mailto:";
+  let bodyToString =
+    "&body=Hello%20Toastmasters%2C%0A%0AAfter%20running%20our%20scheduler%2C%20we%20have%20the%20following%20roles%3A%0A";
+
+  results.forEach(res => {
+    const indexOfParticipant = participants.findIndex(
+      i => i.name === res.member
+    );
+    mailToString += participants[indexOfParticipant].email + ", ";
+    bodyToString +=
+      "*%20" + CapCase(res.role) + "%3A%20" + CapCase(res.member) + "%0A";
+  });
+  bodyToString +=
+    "%0APlease%20confirm%20if%20you%20can%20take%20on%20these%20roles.%20Thanks%20again!";
+
+  mailToString += "?cc=" + config.adminEmail;
+  mailToString +=
+    "&subject=Roles%20for%20our%20next%20Toastmasters%20Session%20" +
+    scheduleDate +
+    "&";
+
+  mailToString += bodyToString;
+  return mailToString;
+}
 
 export default class SearchHeader extends Component {
   constructor(props) {
@@ -50,20 +78,29 @@ export default class SearchHeader extends Component {
     });
   };
 
-  generateSchedule = () => {
+  generateSchedule() {
     // validation
     if (this.state.participants.length < roles.length) {
       alert("Sorry, not enough participants to schedule a meeting.");
     } else {
+      const results = ScheduleService.CreateSchedule(
+        this.state.scheduleDate,
+        this.state.participants
+      );
+
+      const mailToString = generateEmail(
+        results,
+        this.state.participants,
+        this.state.scheduleDate
+      );
+
       this.setState({
         modalOpen: true,
-        results: ScheduleService.CreateSchedule(
-          this.state.scheduleDate,
-          this.state.participants
-        )
+        results: results,
+        emailHref: mailToString
       });
     }
-  };
+  }
 
   handleClose = value => {
     if (value === "SendEmail") {
@@ -96,13 +133,17 @@ export default class SearchHeader extends Component {
             }}
           />
         </MuiPickersUtilsProvider>
-        <button className="btn btn-primary" onClick={this.generateSchedule}>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.generateSchedule()}
+        >
           Generate Schedule
         </button>
         <ResultsDialog
           results={this.state.results}
           scheduleDate={this.state.scheduleDate}
           open={this.state.modalOpen}
+          emailHref={this.state.emailHref}
           onClose={this.handleClose}
         />
       </div>
