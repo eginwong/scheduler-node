@@ -17,7 +17,10 @@ const members = MemberService.GetMembers().map(m =>
 );
 
 const membersDto = members.map(m => {
-  return { value: m, label: CapCase(m.name) };
+  return {
+    value: m,
+    label: CapCase(m.name)
+  };
 });
 
 export default class NewSchedule extends Component {
@@ -58,7 +61,10 @@ export default class NewSchedule extends Component {
         <section className="participants__container">
           <Card className="participants__search">
             <CardContent>
-              <SearchHeader scheduleDate={this.state.scheduleDate} participants={this.state.participants} />
+              <SearchHeader
+                scheduleDate={this.state.scheduleDate}
+                participants={this.state.participants}
+              />
 
               <div className="participants__search--content">
                 <label htmlFor="findParticipant">
@@ -68,7 +74,6 @@ export default class NewSchedule extends Component {
                   id="findParticipant"
                   value={null}
                   onChange={this.handleSelect}
-                  changeHandler={this.changeHandler}
                   options={this.state.members}
                   placeholder="Type or select member name..."
                 />

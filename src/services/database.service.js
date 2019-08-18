@@ -3,7 +3,8 @@ import FileSaver from 'file-saver';
 const DatabaseService = {
 	SetData,
 	GetData,
-	Export
+	Export,
+	ProcessResults
 };
 
 export default DatabaseService;
@@ -892,84 +893,84 @@ function GetData() {
 		  ],
 		  "history": [
 			{
-			  "sessionDate": "2019-04-17",
+			  "scheduleDate": "2019-04-17",
 			  "roles": [
 				{
-				  "roleName": "toastmaster",
-				  "user": "maria-acevedo"
+				  "role": "toastmaster",
+				  "member": "maria-acevedo"
 				},
 				{
-				  "roleName": "grammarian",
-				  "user": "leonard-yu"
+				  "role": "grammarian",
+				  "member": "leonard-yu"
 				},
 				{
-				  "roleName": "evaluator",
-				  "user": "kurt-henry"
+				  "role": "evaluator",
+				  "member": "kurt-henry"
 				},
 				{
-				  "roleName": "evaluator",
-				  "user": "cornell-skyers"
+				  "role": "evaluator",
+				  "member": "cornell-skyers"
 				},
 				{
-				  "roleName": "speaker",
-				  "user": "matthew-steinberg"
+				  "role": "speaker",
+				  "member": "matthew-steinberg"
 				},
 				{
-				  "roleName": "speaker",
-				  "user": "reem-abdalla"
+				  "role": "speaker",
+				  "member": "reem-abdalla"
 				},
 				{
-				  "roleName": "topicsmaster",
-				  "user": "andrea-richardson"
+				  "role": "topicsmaster",
+				  "member": "andrea-richardson"
 				},
 				{
-				  "roleName": "timekeeper",
-				  "user": "chandira-manoharan"
+				  "role": "timekeeper",
+				  "member": "chandira-manoharan"
 				},
 				{
-				  "roleName": "general-evaluator",
-				  "user": "dan-barmasch"
+				  "role": "general-evaluator",
+				  "member": "dan-barmasch"
 				}
 			  ]
 			},
 			{
-			  "sessionDate": "2019-03-27",
+			  "scheduleDate": "2019-03-27",
 			  "roles": [
 				{
-				  "roleName": "toastmaster",
-				  "user": "andrea-richardson"
+				  "role": "toastmaster",
+				  "member": "andrea-richardson"
 				},
 				{
-				  "roleName": "grammarian",
-				  "user": "reem-abdalla"
+				  "role": "grammarian",
+				  "member": "reem-abdalla"
 				},
 				{
-				  "roleName": "evaluator",
-				  "user": "dana-woo"
+				  "role": "evaluator",
+				  "member": "dana-woo"
 				},
 				{
-				  "roleName": "evaluator",
-				  "user": "keegan-grimminck"
+				  "role": "evaluator",
+				  "member": "keegan-grimminck"
 				},
 				{
-				  "roleName": "speaker",
-				  "user": "krishna-jayarajan"
+				  "role": "speaker",
+				  "member": "krishna-jayarajan"
 				},
 				{
-				  "roleName": "speaker",
-				  "user": "eric-wong"
+				  "role": "speaker",
+				  "member": "eric-wong"
 				},
 				{
-				  "roleName": "topicsmaster",
-				  "user": "maria-acevedo"
+				  "role": "topicsmaster",
+				  "member": "maria-acevedo"
 				},
 				{
-				  "roleName": "timekeeper",
-				  "user": "cornell-skyers"
+				  "role": "timekeeper",
+				  "member": "cornell-skyers"
 				},
 				{
-				  "roleName": "general-evaluator",
-				  "user": "mathias-tello"
+				  "role": "general-evaluator",
+				  "member": "mathias-tello"
 				}
 			  ]
 			}
@@ -989,3 +990,53 @@ function Export() {
 		FileSaver.saveAs(blob, "export.json");
 	}
 }
+
+function ProcessResults() {	
+	if(data && data.database && data.session) {
+		// update all users profiles with history
+		const peopleMap = mapPeopleToCapabilities(data.database.members);
+		const proposedSchedule = data.session;
+
+		proposedSchedule.results.forEach((assignment) => {
+			const historicRole = peopleMap.get(assignment.member).history[assignment.role];
+
+			if(historicRole || historicRole.length === 0) {
+				historicRole.unshift(proposedSchedule.scheduleDate.toISOString().split('T')[0]);
+			} else {
+				historicRole = [proposedSchedule.scheduleDate];
+			}
+		})
+
+		data.database.members = Array.from(peopleMap.values());
+
+		// update history
+		data.database.history.unshift({
+			scheduleDate: proposedSchedule.scheduleDate.toISOString().split('T')[0],
+			roles: proposedSchedule.results
+		})
+
+		// delete session
+		delete data.session; 
+	}
+}
+
+function mapPeopleToCapabilities(members) {
+	// filter out the members who can't do things
+	const peopleWithCapabilities = members.filter(
+	  x =>
+		Object.keys(x.capabilities).length !== 0 ||
+		x.capabilities.constructor !== Object
+	);
+  
+	// create hashmap to more easily extract members from json
+	return new Map(
+	  peopleWithCapabilities.map(i => [
+		i.name,
+		{
+		  name: i.name,
+		  capabilities: i.capabilities,
+		  history: i.history
+		}
+	  ])
+	);
+  }

@@ -1,5 +1,3 @@
-// TODO: consume proposed schedule and update database service and export
-// TODO: save proposed schedule to database service and export
 import munkres from "munkres-js";
 import moment from "moment";
 
