@@ -36,7 +36,7 @@ function generateEmail(results, participants, scheduleDate) {
   mailToString += "?cc=" + config.adminEmail;
   mailToString +=
     "&subject=Roles%20for%20our%20next%20Toastmasters%20Session%20" +
-    scheduleDate +
+    moment(scheduleDate, "YYYY-mm-dd") +
     "&";
 
   mailToString += bodyToString;
