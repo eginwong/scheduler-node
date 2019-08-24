@@ -13,7 +13,6 @@ import ScheduleService from "../../src/services/schedule.service";
 import RoleService from "../../src/services/role.service";
 import ResultsDialog from "./results";
 import "../../static/styles/search-header.scss";
-import { config } from "../../components/config";
 import { CapCase } from "../../src/utils/string.utils";
 
 const roles = RoleService.GetRoles().map(r => JSON.parse(JSON.stringify(r)));
@@ -34,24 +33,29 @@ function generateEmail(results, participants, scheduleDate) {
   bodyToString +=
     "%0APlease%20confirm%20if%20you%20can%20take%20on%20these%20roles.%20Thanks%20again!";
 
-  mailToString += "?cc=" + config.adminEmail;
+  if (DatabaseService.GetConfig().adminEmail) {
+    mailToString += "?cc=" + DatabaseService.GetConfig().adminEmail + "&";
+  } else {
+    mailToString += "?"
+  }
   mailToString +=
-    "&subject=Roles%20for%20our%20next%20Toastmasters%20Session%20" +
-    moment(scheduleDate, "YYYY-mm-dd") +
-    "&";
-
+    "subject=Roles%20for%20our%20next%20Toastmasters%20Session%20" +
+    scheduleDate.toISOString().split("T")[0];
   mailToString += bodyToString;
   return mailToString;
 }
 
 function TransformParticipants(participants) {
-  return cloneDeep(participants).map(p => {
-    delete p.possibleRoles;
-    return {
-      ...p,
-      lock: p && p.lock ? p.lock.value : undefined
-    };
-  })
+  if (participants) {
+    return cloneDeep(participants).map(p => {
+      delete p.possibleRoles;
+      return {
+        ...p,
+        lock: p && p.lock ? p.lock.value : undefined
+      };
+    });
+  }
+  return participants;
 }
 
 export default class SearchHeader extends Component {

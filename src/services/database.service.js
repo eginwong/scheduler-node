@@ -3,6 +3,7 @@ import FileSaver from "file-saver";
 const DatabaseService = {
   SetData,
   GetData,
+  GetConfig,
   Export,
   ProcessResults
 };
@@ -14,6 +15,7 @@ const version = 0.1;
 
 function SetData(dataObj) {
   data = {
+    adminEmail: dataObj.adminEmail,
     database: dataObj.database,
     session: dataObj.session
   };
@@ -109,6 +111,14 @@ function GetData() {
       }
     }
   );
+}
+
+function GetConfig() {
+  return {
+    version: data.version,
+    adminEmail: data.adminEmail,
+    modified: data.modified
+  }
 }
 
 function Export() {
