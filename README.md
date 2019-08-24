@@ -31,10 +31,9 @@ Another useful feature is the viewing of history. On the **Previous Sessions** t
 ## Technologies used
 - React
 - Next
-- Node
+- Node 
 
 ## TODO
-- fix lock dropdowns to stop disappearing; not to overlay display
 - add / configure members + README
 - add / configure roles + README
 - add lock functionality to UI, be wary of export functionality and restore of session

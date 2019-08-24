@@ -16,26 +16,46 @@ const members = MemberService.GetMembers().map(m =>
   JSON.parse(JSON.stringify(m))
 );
 
-const membersDto = members.map(m => {
+let membersDto = members.map(m => {
   return {
     value: m,
     label: CapCase(m.name)
   };
 });
 
+function addPossibleRoles(participant) {
+  return Object.assign(participant, {
+    possibleRoles: [{ value: undefined, label: "..." }].concat(
+      Object.keys(participant.capabilities)
+        .filter(c => !!participant.capabilities[c])
+        .map(c => {
+          return { value: c, label: CapCase(c) };
+        })
+    )
+  })
+}
+
 export default class NewSchedule extends Component {
   constructor(props) {
     super(props);
     const session = DatabaseService.GetData().session;
 
-    let members = membersDto;
     if(session && session.participants) {
+      session.participants = session.participants.map(participant => addPossibleRoles(participant))
+      .map(participant => {
+        // add lock object structure back
+        if (participant.lock) {
+          participant.lock = { value: participant.lock, label: CapCase(participant.lock) }
+        }
+        return participant;
+      });
+
       const names = session.participants.map(particip => particip.name);
-      members = members.filter(member => !names.includes(member.value.name));
+      membersDto = membersDto.filter(member => !names.includes(member.value.name));
     }
 
     this.state = {
-      members: members,
+      members: membersDto,
       participants: session && session.participants ? session.participants : [],
       scheduleDate:
         session && session.scheduleDate
@@ -47,9 +67,21 @@ export default class NewSchedule extends Component {
   handleSelect = opt => {
     this.setState({
       members: this.state.members.filter(member => member.label !== opt.label), // removes member from selection
-      participants: this.state.participants.concat(opt.value)
+      participants: this.state.participants.concat(addPossibleRoles(opt.value))
     });
   };
+
+  handleLockSelect(opt, i) {
+    this.setState({
+      participants: this.state.participants.map((participant, index) => {
+        if(index !== i) return participant;
+        return {
+          ...participant,
+          lock: opt
+        };
+      })
+    });
+  }
 
   removeParticipant = event => {
     const member = this.state.participants.splice(event, 1)[0];
@@ -78,7 +110,6 @@ export default class NewSchedule extends Component {
                   <span>Add Participants</span>
                 </label>
                 <Select
-                  instanceId="find-participant-select-id"
                   id="findParticipant"
                   value={null}
                   onChange={this.handleSelect}
@@ -115,7 +146,15 @@ export default class NewSchedule extends Component {
                         &nbsp;{i + 1}&nbsp;
                       </td>
                       <td key={"name_" + i}>{CapCase(particip.name)}</td>
-                      <td key={"volunrole_" + i}>{particip.volunRole}</td>
+                      <td key={"lockColumn_" + i}>
+                        <Select
+                          id={"lock_" + i + "_"}
+                          value={particip.lock}
+                          onChange={(opt) => this.handleLockSelect(opt, i)}
+                          options={particip.possibleRoles}
+                          placeholder="..."
+                        />
+                      </td>
                       <td key={"close_" + i}>
                         <CloseIcon onClick={() => this.removeParticipant(i)} />
                       </td>
