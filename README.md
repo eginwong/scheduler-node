@@ -36,5 +36,4 @@ Another useful feature is the viewing of history. On the **Previous Sessions** t
 ## TODO
 - add / configure members + README
 - add / configure roles + README
-- add lock functionality to UI, be wary of export functionality and restore of session
-- deploy
+- lock dropdown goes past page and necessitates scroll bar
