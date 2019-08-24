@@ -6,6 +6,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+import { cloneDeep } from "lodash";
 
 import DatabaseService from "../../src/services/database.service";
 import ScheduleService from "../../src/services/schedule.service";
@@ -43,12 +44,22 @@ function generateEmail(results, participants, scheduleDate) {
   return mailToString;
 }
 
+function TransformParticipants(participants) {
+  return cloneDeep(participants).map(p => {
+    delete p.possibleRoles;
+    return {
+      ...p,
+      lock: p && p.lock ? p.lock.value : undefined
+    };
+  })
+}
+
 export default class SearchHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      participants: this.props.participants,
-      scheduleDate: this.props.scheduleDate,
+      participants: TransformParticipants(props.participants),
+      scheduleDate: props.scheduleDate,
       modalOpen: false,
       results: []
     };
@@ -57,7 +68,7 @@ export default class SearchHeader extends Component {
   // update props from parent
   componentWillReceiveProps(nextProps) {
     this.setState({
-      participants: nextProps.participants,
+      participants: TransformParticipants(nextProps.participants),
       scheduleDate: nextProps.scheduleDate
     });
   }
