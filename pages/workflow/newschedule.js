@@ -43,8 +43,8 @@ export default class NewSchedule extends Component {
     if(session && session.participants) {
       session.participants = session.participants.map(participant => addPossibleRoles(participant))
       .map(participant => {
-        // add lock object structure back
-        if (participant.lock) {
+        // add lock object structure back, but only when on load
+        if (typeof participant.lock === 'string' || participant.lock instanceof String) {
           participant.lock = { value: participant.lock, label: CapCase(participant.lock) }
         }
         return participant;
