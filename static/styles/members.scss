@@ -3,17 +3,47 @@
 .members__container { 
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
+.member__add {
+    &__title {
+        color: $primary;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 16px 24px 16px !important; // TODO: Move vendor import order ahead of our styles
+        
+        &--input {
+            &-field {
+                padding-right: 10px !important; // TODO: Move vendor import order ahead of our styles
+                width: 200px;
+            }
+        }
+        
+        &--buttons {
+            align-items: flex-end;
+            display: flex;
+            padding-bottom: 10px;
+        }
+    }
+}
+    
 .members__card {
     margin: 30px;
     overflow-x: auto !important; // the mui-card root will override otherwise
+    min-width: 40%;
     max-width: 80%;
 
     &--content {
         max-height: 400px;
         padding: 0 16px !important; // TODO: Move vendor import order ahead of our styles
         overflow-y: scroll;
+        display: flex;
+        justify-content: center;
     }
 
     tr > td {

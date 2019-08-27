@@ -12,17 +12,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
 import SearchHeader from "./search-header";
 
-const members = MemberService.GetMembers().map(m =>
-  JSON.parse(JSON.stringify(m))
-);
-
-let membersDto = members.map(m => {
-  return {
-    value: m,
-    label: CapCase(m.name)
-  };
-});
-
 function addPossibleRoles(participant) {
   return Object.assign(participant, {
     possibleRoles: [{ value: undefined, label: "..." }].concat(
@@ -32,26 +21,45 @@ function addPossibleRoles(participant) {
           return { value: c, label: CapCase(c) };
         })
     )
-  })
+  });
+}
+
+function formatMembers() {
+  return MemberService.GetMembers().map(m => {
+    return {
+      value: m,
+      label: CapCase(m.name)
+    };
+  });
 }
 
 export default class NewSchedule extends Component {
   constructor(props) {
     super(props);
     const session = DatabaseService.GetData().session;
+    let membersDto = formatMembers();
 
-    if(session && session.participants) {
-      session.participants = session.participants.map(participant => addPossibleRoles(participant))
-      .map(participant => {
-        // add lock object structure back, but only when on load
-        if (typeof participant.lock === 'string' || participant.lock instanceof String) {
-          participant.lock = { value: participant.lock, label: CapCase(participant.lock) }
-        }
-        return participant;
-      });
+    if (session && session.participants) {
+      session.participants = session.participants
+        .map(participant => addPossibleRoles(participant))
+        .map(participant => {
+          // add lock object structure back, but only when on load
+          if (
+            typeof participant.lock === "string" ||
+            participant.lock instanceof String
+          ) {
+            participant.lock = {
+              value: participant.lock,
+              label: CapCase(participant.lock)
+            };
+          }
+          return participant;
+        });
 
       const names = session.participants.map(particip => particip.name);
-      membersDto = membersDto.filter(member => !names.includes(member.value.name));
+      membersDto = membersDto.filter(
+        member => !names.includes(member.value.name)
+      );
     }
 
     this.state = {
@@ -74,7 +82,7 @@ export default class NewSchedule extends Component {
   handleLockSelect(opt, i) {
     this.setState({
       participants: this.state.participants.map((participant, index) => {
-        if(index !== i) return participant;
+        if (index !== i) return participant;
         return {
           ...participant,
           lock: opt
@@ -150,7 +158,7 @@ export default class NewSchedule extends Component {
                         <Select
                           id={"lock_" + i + "_"}
                           value={particip.lock}
-                          onChange={(opt) => this.handleLockSelect(opt, i)}
+                          onChange={opt => this.handleLockSelect(opt, i)}
                           options={particip.possibleRoles}
                           placeholder="..."
                         />
