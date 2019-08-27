@@ -34,6 +34,7 @@ Another useful feature is the viewing of history. On the **Previous Sessions** t
 - Node 
 
 ## TODO
-- add / configure members + README
-- add / configure roles + README
+- configure members
+- add / configure roles
+- README for new members and roles!
 - lock dropdown goes past page and necessitates scroll bar
