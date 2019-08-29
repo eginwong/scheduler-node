@@ -15,7 +15,7 @@ import ResultsDialog from "./results";
 import "../../static/styles/search-header.scss";
 import { CapCase } from "../../src/utils/string.utils";
 
-const roles = RoleService.GetRoles().map(r => JSON.parse(JSON.stringify(r)));
+const roles = RoleService.GetExpandedRoles().map(r => JSON.parse(JSON.stringify(r)));
 
 function generateEmail(results, participants, scheduleDate) {
   let mailToString = "mailto:";

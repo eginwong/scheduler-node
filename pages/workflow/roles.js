@@ -1,8 +1,6 @@
 import Workflow from "./index";
 import { CapCase, ReverseCapCase } from "../../src/utils/string.utils";
-import MemberService from "../../src/services/member.service";
 import RoleService from "../../src/services/role.service";
-import Checkbox from "../../components/checkbox";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -15,37 +13,34 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import "../../static/styles/members.scss";
-import { cloneDeep } from "lodash";
+import DatabaseService from "../../src/services/database.service";
 
-const roles = RoleService.GetRoles()
-.map(role => role.name)
-.slice();
-
-export default function Members() {
-  const [members, setMembers] = React.useState(MemberService.GetMembers().map(m => cloneDeep(m)));
+export default function Roles() {
+  const [roles, setRoles] = React.useState(RoleService.GetRoles());
   const [open, setOpen] = React.useState(false);
-  const [newMemberValue, setNewMemberValue] = React.useState({
+  const [newRole, setNewRole] = React.useState({
     name: "",
-    email: ""
+    quantity: 0
   });
 
   function Save() {
-    MemberService.UpdateMembers(members);
+    RoleService.UpdateRoles(roles);
     setOpen(true);
   }
 
-  function SaveNewMember() {
-    if(newMemberValue.name && newMemberValue.email) {
-      newMemberValue.name = ReverseCapCase(newMemberValue.name);
-      MemberService.AddMember(newMemberValue);
-      ClearNewMember();
-      setMembers(MemberService.GetMembers().map(m => cloneDeep(m)));
+  function SaveNewRole() {
+    if (newRole.name && newRole.quantity) {
+      newRole.name = ReverseCapCase(newRole.name);
+      newRole.quantity = parseInt(newRole.quantity);
+      RoleService.AddRole(newRole);
+      ClearNewRole();
+      setRoles(RoleService.GetRoles());
       setOpen(true);
     }
   }
 
-  function ClearNewMember() {
-    setNewMemberValue({name: "", email: ""});
+  function ClearNewRole() {
+    setNewRole({ name: "", quantity: 0 });
   }
 
   function handleClose(event) {
@@ -53,7 +48,7 @@ export default function Members() {
   }
 
   const handleChange = name => event => {
-    setNewMemberValue({ ...newMemberValue, [name]: event.target.value });
+    setNewRole({ ...newRole, [name]: event.target.value });
   };
 
   return (
@@ -61,33 +56,33 @@ export default function Members() {
       <section>
         <div className="members__container">
           <Card className="members__card">
-            <CardHeader title="Add Member" className="member__add__title"/>
+            <CardHeader title="Add Role" className="member__add__title" />
             <CardContent className="member__add__content">
               <div className="member__add__content--input">
                 <TextField
                   id="name"
                   label="Name"
                   className="member__add__content--input-field"
-                  value={newMemberValue.name}
+                  value={newRole.name}
                   onChange={handleChange("name")}
                   margin="normal"
                   required
                 />
                 <TextField
-                  id="email"
-                  label="Email"
+                  id="quantity"
+                  label="Quantity"
                   className="member__add__content--input-field"
-                  value={newMemberValue.email}
-                  onChange={handleChange("email")}
+                  value={newRole.quantity}
+                  onChange={handleChange("quantity")}
                   margin="normal"
                   required
                 />
               </div>
               <div className="member__add__content--buttons">
-                <Button size="small" color="primary" onClick={SaveNewMember}>
+                <Button size="small" color="primary" onClick={SaveNewRole}>
                   Save
                 </Button>
-                <Button size="small" color="secondary" onClick={ClearNewMember}>
+                <Button size="small" color="secondary" onClick={ClearNewRole}>
                   Clear
                 </Button>
               </div>
@@ -98,25 +93,13 @@ export default function Members() {
               <table>
                 <tbody>
                   <tr className="members__card--header">
-                    <th>Members</th>
-                    {roles
-                      .filter((r, i, a) => a.indexOf(r) === i)
-                      .map((role, i) => (
-                        <th key={i}>{CapCase(role)}</th>
-                      ))}
+                    <th>Roles</th>
+                    <th>Quantity</th>
                   </tr>
-                  {members.map((member, i) => (
-                    <tr key={"member_" + member.name + "_" + i}>
-                      <td key={"name_" + i}>{CapCase(member.name)}</td>
-                      {Object.keys(member.capabilities).map((capability, j) => (
-                        <td key={"capability_" + j}>
-                          <Checkbox
-                            id={member.name + "_" + capability}
-                            checked={!!member.capabilities[capability]}
-                            change={b => (member.capabilities[capability] = +b)}
-                          />
-                        </td>
-                      ))}
+                  {roles.map((role, i) => (
+                    <tr key={"role_" + role.name + "_" + i}>
+                      <td key={"name_" + i}>{CapCase(role.name)}</td>
+                      <td key={"quantity_" + i}>{role.quantity}</td>
                     </tr>
                   ))}
                 </tbody>

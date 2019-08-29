@@ -35,6 +35,6 @@ Another useful feature is the viewing of history. On the **Previous Sessions** t
 
 ## TODO
 - configure members
-- add / configure roles
+- configure roles
 - README for new members and roles!
 - lock dropdown goes past page and necessitates scroll bar

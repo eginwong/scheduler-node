@@ -40,7 +40,10 @@ export default function Workflow(props) {
               <a className="workflow__nav--link">Previous Sessions</a>
             </Link>
             <Link href="/workflow/members">
-              <a className="workflow__nav--link">Members</a>
+              <a className="workflow__nav--link">Members Config</a>
+            </Link>
+            <Link href="/workflow/roles">
+              <a className="workflow__nav--link">Roles Config</a>
             </Link>
           </nav>
         </header>

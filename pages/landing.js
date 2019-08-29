@@ -28,6 +28,11 @@ export default () => {
               <a>Member Configuration</a>
             </Link>
           </button>
+          <button className="landing--button btn btn-light">
+            <Link href="/workflow/roles">
+              <a>Role Configuration</a>
+            </Link>
+          </button>
         </div>
       </div>
     </Window>
