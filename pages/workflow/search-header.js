@@ -26,7 +26,7 @@ function generateEmail(results, participants, scheduleDate) {
     const indexOfParticipant = participants.findIndex(
       i => i.name === res.member
     );
-    mailToString += participants[indexOfParticipant].email + ", ";
+    mailToString += participants[indexOfParticipant].email + "; ";
     bodyToString +=
       "*%20" + CapCase(res.role) + "%3A%20" + CapCase(res.member) + "%0A";
   });
