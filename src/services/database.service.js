@@ -1,4 +1,5 @@
 import FileSaver from "file-saver";
+import { cloneDeep } from "lodash";
 
 const DatabaseService = {
   SetData,
@@ -123,14 +124,18 @@ function GetConfig() {
 
 function Export() {
   if (data && data.database) {
+    const clonedData = cloneDeep(data);
+    const exportData = cleanseData(clonedData);
+
     const blob = new Blob(
       [
         JSON.stringify(
           {
             version,
             modified: new Date(),
-            database: data.database,
-            session: data.session
+            adminEmail: exportData.adminEmail,
+            database: exportData.database,
+            session: exportData.session
           },
           null,
           2
@@ -193,4 +198,11 @@ function mapPeopleToCapabilities(members) {
       }
     ])
   );
+}
+
+function cleanseData(data) {
+  for (let i = 0; i < data.database.members.length; i++) {
+    delete data.database.members[i].possibleRoles;
+  }
+  return data;
 }
