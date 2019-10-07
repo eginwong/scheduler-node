@@ -193,6 +193,7 @@ function mapPeopleToCapabilities(members) {
       i.name,
       {
         name: i.name,
+        email: i.email,
         capabilities: i.capabilities,
         history: i.history
       }
