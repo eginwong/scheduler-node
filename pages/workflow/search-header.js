@@ -72,8 +72,7 @@ export default class SearchHeader extends Component {
   // update props from parent
   componentWillReceiveProps(nextProps) {
     this.setState({
-      participants: TransformParticipants(nextProps.participants),
-      scheduleDate: nextProps.scheduleDate
+      participants: TransformParticipants(nextProps.participants)
     });
   }
 
